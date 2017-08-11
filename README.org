@@ -1,4 +1,25 @@
-* A small number of records Easy handling library
+* MemoryRecord
+
+  A small number of records Easy handling library
+
+** Installation
+
+   Install as a standalone gem
+
+#+BEGIN_SRC shell
+$ gem install memory_record
+#+END_SRC
+
+Or install within application using Gemfile
+
+#+BEGIN_SRC shell
+$ bundle add memory_record
+$ bundle install
+#+END_SRC
+
+** Examples
+
+*** Basic usage
 
 #+BEGIN_SRC ruby
 class Direction
