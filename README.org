@@ -70,8 +70,8 @@ Foo.collect(&:code) # => [1, 2, 3]
     =Enumerable= extended, so that =each= method is available
 
 #+BEGIN_SRC ruby
-Foo.each {|v| ... }
-Foo.collect {|v| ... }
+Foo.each { |e| ... }
+Foo.collect { |e| ... }
 #+END_SRC
 
 *** How do I submit a form to select in Rails?
