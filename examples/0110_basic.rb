@@ -1,16 +1,23 @@
 $LOAD_PATH.unshift '../lib'
 require 'memory_record'
 
-class Foo
+class Language
   include MemoryRecord
   memory_record [
-    {key: :male,   name: 'otoko'},
-    {key: :female, name: 'onna'},
-  ], attr_reader: :name
+    {key: :lisp, author: "John McCarthy"      },
+    {key: :c,    author: "Dennis Ritchie"     },
+    {key: :ruby, author: "Yukihiro Matsumoto" },
+  ], attr_reader_auto: true
+
+  def mr_author
+    "Mr. #{author}"
+  end
 end
 
-Foo[:male]   # => #<Foo:0x007ff459a494a8 @attributes={:key=>:male, :name=>"otoko", :code=>0}>
-Foo[:female] # => #<Foo:0x007ff459a49390 @attributes={:key=>:female, :name=>"onna", :code=>1}>
+Language[:ruby].key        # => :ruby
+Language[:ruby].code       # => 2
+Language[:ruby].author     # => "Yukihiro Matsumoto"
+Language[:ruby].mr_author  # => "Mr. Yukihiro Matsumoto"
 
-Foo[:male].name                 # => "otoko"
-Foo[:female].name               # => "onna"
+Language.keys              # => [:lisp, :c, :ruby]
+Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Matsumoto"]
