@@ -115,7 +115,7 @@ object.code # => 1
 
 *** =to_s= method is defined?
 
-    = Alias of =name=, =to_s= is defined.
+    Alias of =name=, =to_s= is defined.
 
 *** If there is no key, use fetch to get an error
 
