@@ -3,16 +3,16 @@ require 'spec_helper'
 class Model
   include MemoryRecord
   memory_record [
-    {name: "A"},
-    {name: "B"},
+    {name: 'A'},
+    {name: 'B'},
   ], attr_reader: :name
 end
 
 class Legacy
   include MemoryRecord
   memory_record [
-    {code: 10, key: :a, name: "A"},
-    {code: 20, key: :b, name: "B"},
+    {code: 10, key: :a, name: 'A'},
+    {code: 20, key: :b, name: 'B'},
   ], attr_reader: :name
 end
 
@@ -26,52 +26,52 @@ RSpec.describe MemoryRecord do
 
   let(:instance) { Model.first }
 
-  context "便利クラスメソッド" do
-    it "each" do
+  context 'Useful Class Methods' do
+    it 'each' do
       assert Model.each
     end
 
-    it "keys" do
+    it 'keys' do
       assert_equal [:_key0, :_key1], Model.keys
     end
 
-    it "values" do
+    it 'values' do
       assert_equal Model.each.to_a, Model.values
     end
   end
 
-  context "クラスに対しての添字アクセス" do
-    it "コードもキーも自動で振る場合" do
-      assert_equal "A", Model[0].name
+  context 'Subscript access to class' do
+    it 'When code and key are automatically waved' do
+      assert_equal 'A', Model[0].name
     end
 
-    it "対応するキーがなくなてもエラーにならない" do
+    it 'It will not cause an error even if there is no corresponding key' do
       assert_nothing_raised { Model[:unknown] }
     end
 
-    it "fetchの場合、対応するキーがなければエラーになる" do
+    it 'In the case of fetch, if there is no corresponding key, an error occurs' do
       assert_raises { Model.fetch(:unknown) }
     end
 
-    it "fetch_if" do
+    it 'fetch_if' do
       assert_nothing_raised { Model.fetch_if(nil) }
     end
   end
 
-  context "インスタンスに対しての添字アクセス" do
+  context 'Subscript access to instance' do
     it do
-      instance[:name].should == "A"
+      instance[:name].should == 'A'
       instance[:xxxx].should == nil
     end
   end
 
-  context "to_s" do
+  context 'to_s' do
     it do
-      instance.to_s.should == "A"
+      instance.to_s.should == 'A'
     end
   end
 
-  context "インスタンスのアクセサー" do
+  context 'instance accessor' do
     it do
       assert instance.attributes
       assert instance.key
@@ -79,60 +79,60 @@ RSpec.describe MemoryRecord do
     end
   end
 
-  context "再設定" do
+  context 'Re-set' do
     before do
       @model = __define [{key: :a}]
       @model.memory_record_list_set [{key: :b}, {key: :c}]
     end
-    it "変更できている" do
+    it 'changed' do
       assert_equal [:b, :c], @model.keys
       assert_equal [0, 1], @model.codes
     end
   end
 
-  context "微妙な仕様" do
-    it "キーは配列で指定するとアンダーバー付きのシンボルになる" do
+  context 'Subtle specifications' do
+    it 'When keys are specified as an array, they become symbols with underscores' do
       model = __define [{key: [:id, :desc]}]
       assert_equal [:id_desc], model.keys
     end
 
-    it "nameメソッドは定義されてなければ自動的に定義" do
+    it 'Name method is automatically defined if it is not defined' do
       model = __define []
       assert_equal true, model.instance_methods.include?(:name)
     end
   end
 
-  it "キーに日本語が使える" do
-    model = __define [{key: "あ"}]
-    assert model["あ"]
+  it 'Japanese can be used for key' do
+    model = __define [{key: 'あ'}]
+    assert model['あ']
   end
 
-  it "コードやキーは自分で定義する場合" do
-    assert_equal "A", Legacy[10].name
+  it 'When you define code and keys yourself' do
+    assert_equal 'A', Legacy[10].name
   end
 
-  it "メモ化が使えなくなるため値のfreezeはしない" do
+  it 'We do not freeze values because memoization becomes impossible' do
     Model.first.name.upcase!
   end
 
-  describe "super" do
+  describe 'super' do
     class Model2
       include MemoryRecord
       memory_record [
-        {var: "x"},
+        {var: 'x'},
       ], attr_reader: :var
 
       def var
-        super + "y"
+        super + 'y'
       end
     end
 
-    it "メソッドは裏に定義されているのでsuperを使える" do
-      assert_equal "xy", Model2.first.var
+    it 'Since methods are defined in ancestry, you can use super' do
+      assert_equal 'xy', Model2.first.var
     end
   end
 
-  describe "attr_reader_auto" do
+  describe 'attr_reader_auto' do
     class Model3
       include MemoryRecord
       memory_record [
@@ -141,23 +141,23 @@ RSpec.describe MemoryRecord do
       ], attr_reader_auto: true
     end
 
-    it "attr_reader => [:a, :b] を自動的に定義" do
+    it do
       assert_equal 1, Model3.first.a
       assert_equal nil, Model3.first.b
     end
   end
 
-  describe "key と code の重複はダメ" do
+  describe 'Do not duplicate key and code' do
     it do
       expect { Model.memory_record_list_set([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
       expect { Model.memory_record_list_set([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
     end
   end
 
-  describe "無名クラスで human_attribute_name は使えない" do
+  describe 'Human_attribute_name can not be used in anonymous class' do
     let(:model) { __define [{foo: 1}] }
 
-    it "エラーにならない " do
+    it 'It does not cause an error' do
       model.first.name.should == nil
     end
   end

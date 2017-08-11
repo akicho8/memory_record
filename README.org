@@ -1,33 +1,33 @@
-* 少数のレコード簡単に扱うライブラリ
+* A small number of records Easy handling library
 
 #+BEGIN_SRC ruby
 class Direction
   include MemoryRecord
   memory_record [
-    {key: :left,  name: "左", vector: [-1,  0]},
-    {key: :right, name: "右", vector: [ 1,  0]},
+    {key: :left,  name: "←", vector: [-1,  0]},
+    {key: :right, name: "→", vector: [ 1,  0]},
   ], attr_reader_auto: true
 
   def long_name
-    "#{name}方向"
+    "#{key}:#{name}"
   end
 end
 
-Direction.collect(&:name)       # => ["左", "右"]
+Direction.collect(&:name)       # => ["←", "→"]
 Direction.keys                  # => [:left, :right]
 
 Direction[:right].key           # => :right
 Direction[:right].code          # => 1
 Direction[:right].vector        # => [1, 0]
-Direction[:right].long_name     # => "右方向"
+Direction[:right].long_name     # => "right:→"
 
 Direction[1].key                # => :right
 
 Direction[:up]                  # => nil
-Direction.fetch(:up) rescue $!  # => #<KeyError: Direction.fetch(:up) では何にもマッチしません。
+Direction.fetch(:up) rescue $!  # => #<KeyError: Direction.fetch(:up) does not match anything。
 #+END_SRC
 
-*** =code= を自分で決めたいときは？
+*** How to decide =code= yourself?
 
 #+BEGIN_SRC ruby
 class Foo
@@ -42,33 +42,33 @@ end
 Foo.collect(&:code) # => [1, 2, 3]
 #+END_SRC
 
-    レガシーなコードをリファクタリングするときの、互換性が必要なときにぐらいにしか使わない。
+    It is used only when refactoring legacy code, when compatibility is required.
 
-*** 配列として回すには？
+*** How to turn as an array?
 
-    =Enumerable= が入っているので =each= 系メソッドが利用可
+    =Enumerable= extended, so that =each= method is available
 
 #+BEGIN_SRC ruby
 Foo.each {|v| ... }
 Foo.collect {|v| ... }
 #+END_SRC
 
-*** Railsでフォームの select に出すときは？
+*** How do I submit a form to select in Rails?
 
 #+BEGIN_SRC ruby
 form.collection_select(:selection_code, Foo, :code, :name)
 #+END_SRC
 
-*** 添字での参照は遅い？
+*** Is the reference in subscripts slow?
 
-    内部で key の値をキーとしたハッシュを持っているため O(1) で取得できる。
+    Since it has a hash internally using the key value as a key, it can be acquired with O (1).
 
 #+BEGIN_SRC ruby
 Foo[1].name  # => "A"
 Foo[:a].name # => "A"
 #+END_SRC
 
-*** インスタンスは =code= と =key= に必ず反応する
+*** Instances always react to =code= and =key=
 
 #+BEGIN_SRC ruby
 object = Foo.first
@@ -76,37 +76,37 @@ object.key  # => :a
 object.code # => 1
 #+END_SRC
 
-*** =attr_reader= オプションとは？
+*** =attr_reader= option
 
-    属性は =@attributes[:xxx]= で参照できるが、頻繁に参照するときには面倒なので =:attr_reader => :xxx= でメソッド化している。
+    The attribute value can be referenced with =@attributes[:xxx]=, but it is troublesome to refer frequently, so it is methodized with =attr_reader: xxx=.
 
-*** =attr_reader_auto= オプションとは？
+*** =attr_reader_auto= option
 
-    属性をすべて =attr_reader= する
+    Automatically all attributes =attr_reader=
 
-*** レコードの属性に気軽にアクセスさせたくないときは？
+*** What if I do not want you to feel free to access the attributes of a record?
 
-    =attr_reader= でメソッド定義せず =object.attributes[:xxx]= で参照する。
+    =attr_reader= with no method definition and reference =object.attributes[:xxx]=
 
-*** インスタンスにメソッドを追加するには？
+*** How do I add a method to an instance?
 
-    そのために新しくクラスを作っているので普通に定義すればいい。
+    For that, I am creating a new class so I need to define it normally
 
-*** =name= メソッドは特別？
+*** =name= method is special?
 
-    =name= が定義されてなかったら =key= の翻訳を返す =name= メソッドを定義している。
+    If =name= is not defined, it defines a =name= method that returns a translation of =key=
 
-*** =to_s= メソッドが定義されている？
+*** =to_s= method is defined?
 
-    =name= の別名で =to_s= を定義している。
+    = Alias of =name=, =to_s= is defined.
 
-*** キーがなければエラーとするには？
+*** If there is no key, use fetch to get an error
 
 #+BEGIN_SRC ruby
 Foo.fetch(:xxx)              # => <KeyError: ...>
 #+END_SRC
 
-    以下は全部同じ
+    The following are all the same
 
 #+BEGIN_SRC ruby
 Foo[:xxx] || :default        # => :default
@@ -114,7 +114,7 @@ Foo.fetch(:xxx, :default}    # => :default
 Foo.fetch(:xxx) { :default } # => :default
 #+END_SRC
 
-*** 値が nil だったらスルーしたいときは？
+*** Use fetch_if to ignore if the key is nil
 
 #+BEGIN_SRC ruby
 Foo.fetch_if(nil)            # => nil

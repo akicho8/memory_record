@@ -1,11 +1,11 @@
-$LOAD_PATH.unshift "../lib"
-require "memory_record"
+$LOAD_PATH.unshift '../lib'
+require 'memory_record'
 
-require "active_record"
+require 'active_record'
 
-ActiveRecord::VERSION::STRING   # => "5.1.2"
+ActiveRecord::VERSION::STRING   # => "5.1.3"
 ActiveRecord::Migration.verbose = false
-ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
 ActiveRecord::Schema.define do
   create_table :users do |t|
@@ -16,8 +16,8 @@ end
 class GenderInfo
   include MemoryRecord
   memory_record [
-    {key: :male,   name: "男"},
-    {key: :female, name: "女"},
+    {key: :male,   name: 'otoko'},
+    {key: :female, name: 'onna'},
   ], attr_reader: :name
 end
 
@@ -30,4 +30,4 @@ class User < ActiveRecord::Base
 end
 
 user = User.create!(gender_key: :male)
-user.gender_info.name           # => "男"
+user.gender_info.name           # => "otoko"

@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift "../lib"
-require "memory_record"
+$LOAD_PATH.unshift '../lib'
+require 'memory_record'
 
 class Foo
   include MemoryRecord

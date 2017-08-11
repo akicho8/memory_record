@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-require "active_support/concern"
-require "active_support/core_ext/module/concerning"
-require "active_support/core_ext/class/attribute"
-require "active_support/core_ext/array/wrap"
-require "active_model"
+require 'active_support/concern'
+require 'active_support/core_ext/module/concerning'
+require 'active_support/core_ext/class/attribute'
+require 'active_support/core_ext/array/wrap'
+require 'active_model'
 
 module MemoryRecord
   extend ActiveSupport::Concern
@@ -85,7 +85,7 @@ module MemoryRecord
             v = default
           else
             raise KeyError, [
-              "#{name}.fetch(#{key.inspect}) では何にもマッチしません",
+              "#{name}.fetch(#{key.inspect}) does not match anything",
               "keys: #{keys.inspect}",
               "codes: #{codes.inspect}",
             ].join("\n")
@@ -119,11 +119,11 @@ module MemoryRecord
         @values_hash = {}
         [:code, :key].each do |pk|
           @values_hash[pk] = @values.inject({}) do |a, e|
-            a.merge(e.send(pk) => e) do |key, old_val, new_val|
+            a.merge(e.send(pk) => e) do |key, a, b|
               raise ArgumentError, [
-                "#{name}##{pk} の #{key.inspect} が重複しています",
-                "  古い値: #{old_val.attributes.inspect}",
-                "新しい値: #{new_val.attributes.inspect}",
+                "#{name}##{pk} #{key.inspect} is duplicate",
+                "Existing:  #{a.attributes.inspect}",
+                "Collision: #{b.attributes.inspect}",
               ].join("\n")
             end
           end
@@ -135,7 +135,7 @@ module MemoryRecord
       def _attributes_normalize(attrs, index)
         key = attrs[:key] || "_key#{index}"
         if key.kind_of? Array
-          key = key.join("_")
+          key = key.join('_')
         end
         attrs.merge(code: attrs[:code] || index, key: key.to_sym)
       end

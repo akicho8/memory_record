@@ -1,11 +1,11 @@
 # freeze してしまうとこれらのメモ化ができなくなる
 
-$LOAD_PATH.unshift "../lib"
-require "memory_record"
+$LOAD_PATH.unshift '../lib'
+require 'memory_record'
 
 class C
   def self.x
-    @x ||= "OK"
+    @x ||= 'OK'
   end
 end
 
@@ -16,7 +16,7 @@ class C2
   ], attr_reader_auto: true
 
   def x
-    @x ||= "OK"
+    @x ||= 'OK'
   end
 end
 
