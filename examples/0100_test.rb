@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift "../lib"
-require "static_record"
+require "memory_record"
 
 # class Foo
-#   include StaticRecord
-#   static_record [
+#   include MemoryRecord
+#   memory_record [
 #     {key: :male,   name: "男"},
 #     {key: :female, name: "女"},
 #   ], attr_reader: :name
@@ -28,8 +28,8 @@ require "static_record"
 # User.where(gender_key: :male)
 
 class GenderInfo
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {key: :male,   name: "男", color: "青"},
     {key: :female, name: "女", color: "赤"},
   ], attr_reader_auto: true

@@ -1,10 +1,10 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'static_record/version'
+require 'memory_record/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "static_record"
-  spec.version       = StaticRecord::VERSION
+  spec.name          = "memory_record"
+  spec.version       = MemoryRecord::VERSION
   spec.authors       = ["akicho8"]
   spec.email         = ["akicho8@gmail.com"]
   spec.description   = %q{Model that can be accessed even as an array as a hash}

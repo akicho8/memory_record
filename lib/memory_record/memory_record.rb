@@ -5,30 +5,30 @@ require "active_support/core_ext/class/attribute"
 require "active_support/core_ext/array/wrap"
 require "active_model"
 
-module StaticRecord
+module MemoryRecord
   extend ActiveSupport::Concern
 
   class_methods do
-    def static_record(list, **options, &block)
-      return if static_record_defined?
+    def memory_record(list, **options, &block)
+      return if memory_record_defined?
 
       extend ActiveModel::Translation
       extend Enumerable
-      include ::StaticRecord::SingletonMethods
+      include ::MemoryRecord::SingletonMethods
 
-      class_attribute :static_record_configuration
-      self.static_record_configuration = {
+      class_attribute :memory_record_configuration
+      self.memory_record_configuration = {
         attr_reader: [],
       }.merge(options)
 
       if block_given?
-        yield static_record_configuration
+        yield memory_record_configuration
       end
 
-      if static_record_configuration[:attr_reader_auto]
+      if memory_record_configuration[:attr_reader_auto]
         _attr_reader = list.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
       else
-        _attr_reader = static_record_configuration[:attr_reader]
+        _attr_reader = memory_record_configuration[:attr_reader]
       end
 
       include Module.new.tap { |m|
@@ -49,18 +49,18 @@ module StaticRecord
         end
       }
 
-      static_record_list_set(list)
+      memory_record_list_set(list)
     end
 
-    def static_record_defined?
+    def memory_record_defined?
       ancestors.include?(SingletonMethods)
     end
   end
 
   concern :SingletonMethods do
     class_methods do
-      def static_record?
-        static_record_defined?
+      def memory_record?
+        memory_record_defined?
       end
 
       def lookup(key)
@@ -112,7 +112,7 @@ module StaticRecord
 
       attr_reader :values
 
-      def static_record_list_set(list)
+      def memory_record_list_set(list)
         @keys = nil
         @codes = nil
         @values = list.collect.with_index {|e, i| new(_attributes_normalize(e, i)) }.freeze

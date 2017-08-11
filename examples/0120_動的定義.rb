@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift "../lib"
-require "static_record"
+require "memory_record"
 
 model = Class.new do
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {foo: 1},
     {foo: 2},
   ], attr_reader_auto: true

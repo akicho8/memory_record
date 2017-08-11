@@ -1,26 +1,26 @@
 require 'spec_helper'
 
 class Model
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {name: "A"},
     {name: "B"},
   ], attr_reader: :name
 end
 
 class Legacy
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {code: 10, key: :a, name: "A"},
     {code: 20, key: :b, name: "B"},
   ], attr_reader: :name
 end
 
-RSpec.describe StaticRecord do
+RSpec.describe MemoryRecord do
   def __define(table)
     Class.new {
-      include StaticRecord
-      static_record table, attr_reader_auto: true
+      include MemoryRecord
+      memory_record table, attr_reader_auto: true
     }
   end
 
@@ -82,7 +82,7 @@ RSpec.describe StaticRecord do
   context "再設定" do
     before do
       @model = __define [{key: :a}]
-      @model.static_record_list_set [{key: :b}, {key: :c}]
+      @model.memory_record_list_set [{key: :b}, {key: :c}]
     end
     it "変更できている" do
       assert_equal [:b, :c], @model.keys
@@ -117,8 +117,8 @@ RSpec.describe StaticRecord do
 
   describe "super" do
     class Model2
-      include StaticRecord
-      static_record [
+      include MemoryRecord
+      memory_record [
         {var: "x"},
       ], attr_reader: :var
 
@@ -134,8 +134,8 @@ RSpec.describe StaticRecord do
 
   describe "attr_reader_auto" do
     class Model3
-      include StaticRecord
-      static_record [
+      include MemoryRecord
+      memory_record [
         {a: 1},
         {b: 2},
       ], attr_reader_auto: true
@@ -149,8 +149,8 @@ RSpec.describe StaticRecord do
 
   describe "key と code の重複はダメ" do
     it do
-      expect { Model.static_record_list_set([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
-      expect { Model.static_record_list_set([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
+      expect { Model.memory_record_list_set([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
+      expect { Model.memory_record_list_set([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
     end
   end
 

@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift "../lib"
-require "static_record"
+require "memory_record"
 
 class Direction
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {key: :left,  name: "左", vector: [-1,  0]},
     {key: :right, name: "右", vector: [ 1,  0]},
   ], attr_reader_auto: true

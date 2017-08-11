@@ -1,7 +1,7 @@
 # freeze してしまうとこれらのメモ化ができなくなる
 
 $LOAD_PATH.unshift "../lib"
-require "static_record"
+require "memory_record"
 
 class C
   def self.x
@@ -10,8 +10,8 @@ class C
 end
 
 class C2
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {model: C},
   ], attr_reader_auto: true
 

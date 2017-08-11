@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift "../lib"
-require "static_record"
+require "memory_record"
 
 class Foo
-  include StaticRecord
-  static_record [
+  include MemoryRecord
+  memory_record [
     {key: "↑", name: "上"},
   ], attr_reader: :name
 end
