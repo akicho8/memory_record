@@ -9,8 +9,13 @@ module MemoryRecord
   extend ActiveSupport::Concern
 
   class_methods do
-    def memory_record(list, **options, &block)
+    def memory_record(records = nil, **options, &block)
       return if memory_record_defined?
+
+      if block
+        options = records || {}
+        records = block.call
+      end
 
       extend ActiveModel::Translation
       extend Enumerable
@@ -26,7 +31,7 @@ module MemoryRecord
       end
 
       if memory_record_configuration[:attr_reader_auto]
-        _attr_reader = list.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
+        _attr_reader = records.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
       else
         _attr_reader = memory_record_configuration[:attr_reader]
       end
@@ -50,7 +55,7 @@ module MemoryRecord
         end
       }
 
-      memory_record_reset(list)
+      memory_record_reset(records)
     end
 
     def memory_record_defined?
@@ -119,10 +124,10 @@ module MemoryRecord
 
       attr_reader :values
 
-      def memory_record_reset(list)
+      def memory_record_reset(records)
         @keys = nil
         @codes = nil
-        @values = list.collect.with_index { |e, i|
+        @values = records.collect.with_index { |e, i|
           new(_attributes_normalize(e, i))
         }.freeze
         @values_hash = {}
