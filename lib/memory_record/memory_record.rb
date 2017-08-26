@@ -39,7 +39,7 @@ module MemoryRecord
 
       class_attribute :memory_record_options
       self.memory_record_options = {
-        attr_reader: [],
+        attr_reader: true,
       }.merge(options)
 
       if block_given?
