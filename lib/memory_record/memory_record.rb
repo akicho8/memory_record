@@ -21,19 +21,19 @@ module MemoryRecord
       extend Enumerable
       include ::MemoryRecord::SingletonMethods
 
-      class_attribute :memory_record_configuration
-      self.memory_record_configuration = {
+      class_attribute :memory_record_options
+      self.memory_record_options = {
         attr_reader: [],
       }.merge(options)
 
       if block_given?
-        yield memory_record_configuration
+        yield memory_record_options
       end
 
-      if memory_record_configuration[:attr_reader_auto]
+      if memory_record_options[:attr_reader_auto]
         _attr_reader = records.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
       else
-        _attr_reader = memory_record_configuration[:attr_reader]
+        _attr_reader = memory_record_options[:attr_reader]
       end
 
       # Define it to an ancestor so that super method can be used.
