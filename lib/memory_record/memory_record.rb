@@ -31,6 +31,7 @@ module MemoryRecord
         _attr_reader = memory_record_configuration[:attr_reader]
       end
 
+      # Define it to an ancestor so that super method can be used.
       include Module.new.tap { |m|
         ([:key, :code] + Array.wrap(_attr_reader)).uniq.each do |key|
           m.class_eval do
@@ -64,7 +65,10 @@ module MemoryRecord
       end
 
       def lookup(key)
-        return key if key.kind_of? self
+        if key.kind_of? self
+          return key
+        end
+
         case key
         when Symbol, String
           @values_hash[:key][key.to_sym]
@@ -75,7 +79,10 @@ module MemoryRecord
       alias [] lookup
 
       def fetch(key, default = nil, &block)
-        raise ArgumentError if block_given? && default
+        if block_given? && default
+          raise ArgumentError
+        end
+
         v = lookup(key)
         unless v
           case
@@ -115,15 +122,17 @@ module MemoryRecord
       def memory_record_list_set(list)
         @keys = nil
         @codes = nil
-        @values = list.collect.with_index {|e, i| new(_attributes_normalize(e, i)) }.freeze
+        @values = list.collect.with_index { |e, i|
+          new(_attributes_normalize(e, i))
+        }.freeze
         @values_hash = {}
         [:code, :key].each do |pk|
           @values_hash[pk] = @values.inject({}) do |a, e|
             a.merge(e.send(pk) => e) do |key, a, b|
               raise ArgumentError, [
                 "#{name}##{pk} #{key.inspect} is duplicate",
-                "Existing:  #{a.attributes.inspect}",
-                "Collision: #{b.attributes.inspect}",
+                "Existing: #{a.attributes.inspect}",
+                "Conflict: #{b.attributes.inspect}",
               ].join("\n")
             end
           end
