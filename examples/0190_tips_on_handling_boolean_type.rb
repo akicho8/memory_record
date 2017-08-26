@@ -6,9 +6,9 @@ class Foo
   memory_record [
     {key: 'true',  name: '有効'},
     {key: 'false', name: '無効'},
-  ], attr_reader: :name
+  ]
 end
 
 flag = true
 
-Foo[flag.to_s].name             # => '有効'
+Foo[flag.to_s].name             # => "有効"

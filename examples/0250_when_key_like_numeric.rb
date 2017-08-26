@@ -6,7 +6,7 @@ class Foo
   memory_record [
     {key: '01', name: '→'},
     {key: '02', name: '←'},
-  ], attr_reader: :name
+  ]
 end
 
 Foo['01'] # => #<Foo:0x007fac2c35db28 @attributes={:key=>:'01', :name=>'→', :code=>0}>

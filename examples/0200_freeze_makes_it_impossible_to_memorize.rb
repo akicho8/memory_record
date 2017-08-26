@@ -1,4 +1,4 @@
-# freeze してしまうとこれらのメモ化ができなくなる
+# If you freeze it will not be able to make these memos
 
 $LOAD_PATH.unshift '../lib'
 require 'memory_record'
@@ -13,7 +13,7 @@ class C2
   include MemoryRecord
   memory_record [
     {model: C},
-  ], attr_reader: true
+  ]
 
   def x
     @x ||= 'OK'

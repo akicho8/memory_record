@@ -16,9 +16,9 @@ end
 class GenderInfo
   include MemoryRecord
   memory_record [
-    {key: :male,   name: 'otoko'},
-    {key: :female, name: 'onna'},
-  ], attr_reader: :name
+    {key: :male,   name: '♂'},
+    {key: :female, name: '♀'},
+  ]
 end
 
 class User < ActiveRecord::Base
@@ -30,4 +30,4 @@ class User < ActiveRecord::Base
 end
 
 user = User.create!(gender_key: :male)
-user.gender_info.name           # => "otoko"
+user.gender_info.name           # => "♂"

@@ -138,7 +138,7 @@ RSpec.describe MemoryRecord do
       memory_record [
         {a: 1},
         {b: 2},
-      ], attr_reader: true
+      ]
     end
 
     it do

@@ -14,11 +14,11 @@ module MemoryRecord
     #   memory_record [
     #     {id: 1, name: "alice"},
     #     {id: 2, name: "bob"  },
-    #   ], attr_reader: true
+    #   ], attr_reader: false
     #
     # or
     #
-    #   memory_record(attr_reader: true) do
+    #   memory_record(attr_reader: false) do
     #     [
     #       {id: 1, name: "alice"},
     #       {id: 2, name: "bob"  },
@@ -60,6 +60,8 @@ module MemoryRecord
         attr_reader_args = all_keys
       when Array
         attr_reader_args = v
+      when Symbol, String
+        attr_reader_args = [v]
       end
 
       # Define it to an ancestor so that super method can be used.

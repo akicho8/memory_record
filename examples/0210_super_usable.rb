@@ -5,7 +5,7 @@ class Foo
   include MemoryRecord
   memory_record [
     {a: 10},
-  ], attr_reader: :a
+  ]
 
   def a
     super * 2

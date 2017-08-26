@@ -3,14 +3,14 @@ require 'memory_record'
 
 class C
   include MemoryRecord
-  memory_record [{key: :a}], attr_reader: :name
+  memory_record [{key: :a}]
 end
 
 C.keys                          # => [:a]
 
 # memory_record では更新できない
 class C
-  memory_record [{key: :b}], attr_reader: :name
+  memory_record [{key: :b}]
 end
 
 C.keys                          # => [:a]

@@ -6,7 +6,7 @@ class Foo
   memory_record [
     {name: 'alice'},
     {name: 'bob'},
-  ], attr_reader: true
+  ]
 end
 
 require 'active_model'
