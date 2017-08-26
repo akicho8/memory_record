@@ -20,7 +20,7 @@ RSpec.describe MemoryRecord do
   def __define(table)
     Class.new {
       include MemoryRecord
-      memory_record table, attr_reader_auto: true
+      memory_record table, attr_reader: true
     }
   end
 
@@ -132,13 +132,13 @@ RSpec.describe MemoryRecord do
     end
   end
 
-  describe 'attr_reader_auto' do
+  describe 'attr_reader' do
     class Model3
       include MemoryRecord
       memory_record [
         {a: 1},
         {b: 2},
-      ], attr_reader_auto: true
+      ], attr_reader: true
     end
 
     it do

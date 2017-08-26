@@ -14,11 +14,11 @@ module MemoryRecord
     #   memory_record [
     #     {id: 1, name: "alice"},
     #     {id: 2, name: "bob"  },
-    #   ], attr_reader_auto: true
+    #   ], attr_reader: true
     #
     # or
     #
-    #   memory_record(attr_reader_auto: true) do
+    #   memory_record(attr_reader: true) do
     #     [
     #       {id: 1, name: "alice"},
     #       {id: 2, name: "bob"  },
@@ -46,15 +46,25 @@ module MemoryRecord
         yield memory_record_options
       end
 
-      if memory_record_options[:attr_reader_auto]
-        _attr_reader = records.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
-      else
-        _attr_reader = memory_record_options[:attr_reader]
+      attr_reader_args = []
+      all_keys = records.inject([]) { |a, e| a | e.keys.collect(&:to_sym) }
+      case v = memory_record_options[:attr_reader]
+      when true
+        attr_reader_args = all_keys
+      when Hash
+        if v[:only]
+          all_keys &= Array(v[:only])
+        elsif v[:except]
+          all_keys -= Array(v[:except])
+        end
+        attr_reader_args = all_keys
+      when Array
+        attr_reader_args = v
       end
 
       # Define it to an ancestor so that super method can be used.
       include Module.new.tap { |m|
-        ([:key, :code] + Array.wrap(_attr_reader)).uniq.each do |key|
+        ([:key, :code] + attr_reader_args).uniq.each do |key|
           m.class_eval do
             define_method(key) { @attributes[key.to_sym] }
           end

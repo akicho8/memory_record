@@ -7,7 +7,7 @@ class Language
     {key: :lisp, author: "John McCarthy"      },
     {key: :c,    author: "Dennis Ritchie"     },
     {key: :ruby, author: "Yukihiro Matsumoto" },
-  ], attr_reader_auto: true
+  ], attr_reader: true
 
   def mr_author
     "Mr. #{author}"

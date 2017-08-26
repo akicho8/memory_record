@@ -6,7 +6,7 @@ model = Class.new do
   memory_record [
     {a: 1},
     {b: 2},
-  ], attr_reader_auto: true
+  ], attr_reader: true
 end
 
 model.first.name                # => nil

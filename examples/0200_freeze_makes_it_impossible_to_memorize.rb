@@ -13,7 +13,7 @@ class C2
   include MemoryRecord
   memory_record [
     {model: C},
-  ], attr_reader_auto: true
+  ], attr_reader: true
 
   def x
     @x ||= 'OK'

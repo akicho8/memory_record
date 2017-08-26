@@ -6,7 +6,7 @@ class Direction
   memory_record [
     {key: :left,  name: '←', vector: [-1,  0]},
     {key: :right, name: '→', vector: [ 1,  0]},
-  ], attr_reader_auto: true
+  ], attr_reader: true
 
   def long_name
     '#{name}方向'
