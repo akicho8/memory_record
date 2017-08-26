@@ -50,7 +50,7 @@ module MemoryRecord
         end
       }
 
-      memory_record_list_set(list)
+      memory_record_reset(list)
     end
 
     def memory_record_defined?
@@ -119,7 +119,7 @@ module MemoryRecord
 
       attr_reader :values
 
-      def memory_record_list_set(list)
+      def memory_record_reset(list)
         @keys = nil
         @codes = nil
         @values = list.collect.with_index { |e, i|

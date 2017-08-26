@@ -82,7 +82,7 @@ RSpec.describe MemoryRecord do
   context 'Re-set' do
     before do
       @model = __define [{key: :a}]
-      @model.memory_record_list_set [{key: :b}, {key: :c}]
+      @model.memory_record_reset [{key: :b}, {key: :c}]
     end
     it 'changed' do
       assert_equal [:b, :c], @model.keys
@@ -149,8 +149,8 @@ RSpec.describe MemoryRecord do
 
   describe 'Do not duplicate key and code' do
     it do
-      expect { Model.memory_record_list_set([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
-      expect { Model.memory_record_list_set([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
+      expect { Model.memory_record_reset([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
+      expect { Model.memory_record_reset([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
     end
   end
 

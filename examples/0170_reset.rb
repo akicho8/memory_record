@@ -15,7 +15,7 @@ end
 
 C.keys                          # => [:a]
 
-# memory_record_list_set を使うこと
-C.memory_record_list_set [{key: :c}]
+# memory_record_reset を使うこと
+C.memory_record_reset [{key: :c}]
 
 C.keys                          # => [:c]
