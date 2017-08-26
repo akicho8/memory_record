@@ -9,6 +9,22 @@ module MemoryRecord
   extend ActiveSupport::Concern
 
   class_methods do
+    # Example
+    #
+    #   memory_record [
+    #     {id: 1, name: "alice"},
+    #     {id: 2, name: "bob"  },
+    #   ], attr_reader_auto: true
+    #
+    # or
+    #
+    #   memory_record(attr_reader_auto: true) do
+    #     [
+    #       {id: 1, name: "alice"},
+    #       {id: 2, name: "bob"  },
+    #     ]
+    #   end
+    #
     def memory_record(records = nil, **options, &block)
       return if memory_record_defined?
 
