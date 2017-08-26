@@ -53,7 +53,7 @@ class Foo
     {code: 1, key: :a, name: "A"},
     {code: 2, key: :b, name: "B"},
     {code: 3, key: :c, name: "C"},
-  ], attr_reader: :name
+  ]
 end
 
 Foo.collect(&:code) # => [1, 2, 3]
@@ -92,18 +92,6 @@ object = Foo.first
 object.key  # => :a
 object.code # => 1
 #+END_SRC
-
-*** =attr_reader= option
-
-    The attribute value can be referenced with =@attributes[:xxx]=, but it is troublesome to refer frequently, so it is methodized with =attr_reader: xxx=.
-
-*** =attr_reader= option
-
-    Automatically all attributes =attr_reader=
-
-*** What if I do not want you to feel free to access the attributes of a record?
-
-    =attr_reader= with no method definition and reference =object.attributes[:xxx]=
 
 *** How do I add a method to an instance?
 
