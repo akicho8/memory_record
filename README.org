@@ -136,12 +136,46 @@ class Foo
   include MemoryRecord
   memory_record attr_reader: false do
     [
-      {x: 1},
+      {x: 1, y: 1, z: 1},
     ]
   end
 end
 
-Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb070a5d4d0>>
-Foo.first[:x]            # => 1
-Foo.first.attributes[:x] # => 1
+Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb2c710eda8>>
+Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007fb2c710eda8>>
+Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c710eda8>>
+#+END_SRC
+
+**** `attr_reader: {only: :x}`
+
+#+BEGIN_SRC ruby
+class Foo
+  include MemoryRecord
+  memory_record attr_reader: {only: :x} do
+    [
+      {x: 1, y: 1, z: 1},
+    ]
+  end
+end
+
+Foo.first.x rescue $! # => 1
+Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007fb2c70e6df8>>
+Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c70e6df8>>
+#+END_SRC
+
+**** `attr_reader: {except: :x}`
+
+#+BEGIN_SRC ruby
+class Foo
+  include MemoryRecord
+  memory_record attr_reader: {except: :x} do
+    [
+      {x: 1, y: 1, z: 1},
+    ]
+  end
+end
+
+Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb2c70ce668>>
+Foo.first.y rescue $! # => 1
+Foo.first.z rescue $! # => 1
 #+END_SRC
