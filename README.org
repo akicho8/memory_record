@@ -165,7 +165,7 @@ Foo.first.y rescue $! # => 1
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fcc861ff108>>
 #+END_SRC
 
-**** attr_reader: {except: :x}
+**** attr_reader: {except: :y}
 
 #+BEGIN_SRC ruby
 class Foo
