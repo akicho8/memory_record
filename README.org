@@ -1,6 +1,6 @@
 * MemoryRecord
 
-  A small number of records Easy handling library
+  A small number of records easy handling library
 
 ** Installation
 
