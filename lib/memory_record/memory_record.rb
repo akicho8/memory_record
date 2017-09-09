@@ -29,7 +29,6 @@ module MemoryRecord
       return if memory_record_defined?
 
       if block
-        options = records || {}
         records = block.call
       end
 

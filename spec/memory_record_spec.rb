@@ -17,10 +17,10 @@ class Legacy
 end
 
 RSpec.describe MemoryRecord do
-  def __define(table)
+  def class_new(table)
     Class.new {
       include MemoryRecord
-      memory_record table, attr_reader: true
+      memory_record table
     }
   end
 
@@ -81,7 +81,7 @@ RSpec.describe MemoryRecord do
 
   context 'Re-set' do
     before do
-      @model = __define [{key: :a}]
+      @model = class_new [{key: :a}]
       @model.memory_record_reset [{key: :b}, {key: :c}]
     end
     it 'changed' do
@@ -92,18 +92,18 @@ RSpec.describe MemoryRecord do
 
   context 'Subtle specifications' do
     it 'When keys are specified as an array, they become symbols with underscores' do
-      model = __define [{key: [:id, :desc]}]
+      model = class_new [{key: [:id, :desc]}]
       assert_equal [:id_desc], model.keys
     end
 
     it 'Name method is automatically defined if it is not defined' do
-      model = __define []
+      model = class_new []
       assert_equal true, model.instance_methods.include?(:name)
     end
   end
 
   it 'Japanese can be used for key' do
-    model = __define [{key: 'あ'}]
+    model = class_new [{key: 'あ'}]
     assert model['あ']
   end
 
@@ -155,10 +155,50 @@ RSpec.describe MemoryRecord do
   end
 
   describe 'Human_attribute_name can not be used in anonymous class' do
-    let(:model) { __define [{foo: 1}] }
+    let(:model) { class_new [{foo: 1}] }
 
     it 'It does not cause an error' do
       model.first.name.should == nil
+    end
+  end
+
+  describe 'attr_reader option' do
+    def element(options)
+      Class.new {
+        include MemoryRecord
+        memory_record options do
+          [
+            {x: 1, y: 1, z: 1},
+          ]
+        end
+      }.first
+    end
+
+    context 'false' do
+      subject { element(attr_reader: false) }
+      it do
+        assert_equal false, subject.respond_to?(:x)
+        assert_equal false, subject.respond_to?(:y)
+        assert_equal false, subject.respond_to?(:z)
+      end
+    end
+
+    context 'only' do
+      subject { element(attr_reader: {only: [:x, :z]}) }
+      it do
+        assert_equal true,  subject.respond_to?(:x)
+        assert_equal false, subject.respond_to?(:y)
+        assert_equal true,  subject.respond_to?(:z)
+      end
+    end
+
+    context 'except' do
+      subject { element(attr_reader: {except: :y}) }
+      it do
+        assert_equal true,  subject.respond_to?(:x)
+        assert_equal false, subject.respond_to?(:y)
+        assert_equal true,  subject.respond_to?(:z)
+      end
     end
   end
 end
