@@ -129,6 +129,8 @@ Foo.fetch_if(:xxx)           # => <KeyError: ...>
 
 *** How can I prohibit the hash key from being attr_reader automatically?
 
+**** attr_reader: false
+
 I think that it is better to use it when you want to make it difficult to access easily.
 
 #+BEGIN_SRC ruby
@@ -146,12 +148,29 @@ Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c710eda8>>
 #+END_SRC
 
-**** `attr_reader: {only: :x}`
+**** attr_reader: {only: :y}
 
 #+BEGIN_SRC ruby
 class Foo
   include MemoryRecord
-  memory_record attr_reader: {only: :x} do
+  memory_record attr_reader: {only: :y} do
+    [
+      {x: 1, y: 1, z: 1},
+    ]
+  end
+end
+
+Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fcc861ff108>>
+Foo.first.y rescue $! # => 1
+Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fcc861ff108>>
+#+END_SRC
+
+**** attr_reader: {except: :x}
+
+#+BEGIN_SRC ruby
+class Foo
+  include MemoryRecord
+  memory_record attr_reader: {except: :y} do
     [
       {x: 1, y: 1, z: 1},
     ]
@@ -159,23 +178,6 @@ class Foo
 end
 
 Foo.first.x rescue $! # => 1
-Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007fb2c70e6df8>>
-Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c70e6df8>>
-#+END_SRC
-
-**** `attr_reader: {except: :x}`
-
-#+BEGIN_SRC ruby
-class Foo
-  include MemoryRecord
-  memory_record attr_reader: {except: :x} do
-    [
-      {x: 1, y: 1, z: 1},
-    ]
-  end
-end
-
-Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb2c70ce668>>
-Foo.first.y rescue $! # => 1
+Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007ff033895e88>>
 Foo.first.z rescue $! # => 1
 #+END_SRC
