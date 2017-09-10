@@ -1,6 +1,6 @@
 * MemoryRecord
 
-  A small number of records easy handling library
+  A simple library that handles a few records easily
 
 ** Installation
 
@@ -43,23 +43,6 @@ Language[:ruby].mr_author  # => "Mr. Yukihiro Matsumoto"
 Language.keys              # => [:lisp, :c, :ruby]
 Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Matsumoto"]
 #+END_SRC
-
-*** How to decide =code= yourself?
-
-#+BEGIN_SRC ruby
-class Foo
-  include MemoryRecord
-  memory_record [
-    {code: 1, key: :a, name: "A"},
-    {code: 2, key: :b, name: "B"},
-    {code: 3, key: :c, name: "C"},
-  ]
-end
-
-Foo.collect(&:code) # => [1, 2, 3]
-#+END_SRC
-
-    It is used only when refactoring legacy code, when compatibility is required.
 
 *** How to turn as an array?
 
@@ -181,3 +164,22 @@ Foo.first.x rescue $! # => 1
 Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007ff033895e88>>
 Foo.first.z rescue $! # => 1
 #+END_SRC
+
+*** How to decide =code= yourself?
+
+#+BEGIN_SRC ruby
+class Foo
+  include MemoryRecord
+  memory_record [
+    {code: 1, key: :a, name: "A"},
+    {code: 2, key: :b, name: "B"},
+    {code: 3, key: :c, name: "C"},
+  ]
+end
+
+Foo.collect(&:code) # => [1, 2, 3]
+#+END_SRC
+
+    It is not recommended to specify it explicitly.
+    It is useful only when refactoring legacy code with compatibility in mind.
+

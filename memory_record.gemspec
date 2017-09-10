@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = MemoryRecord::VERSION
   spec.authors       = ['akicho8']
   spec.email         = ['akicho8@gmail.com']
-  spec.description   = %q{A small number of records easy handling library}
-  spec.summary       = %q{A small number of records easy handling library}
+  spec.description   = %q{A simple library that handles a few records easily}
+  spec.summary       = %q{A simple library that handles a few records easily}
   spec.homepage      = ''
   spec.license       = 'MIT'
 
