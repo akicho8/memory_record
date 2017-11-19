@@ -108,7 +108,10 @@ module MemoryRecord
           @values_hash[:code][key]
         end
       end
-      alias [] lookup
+
+      def [](*v)
+        lookup(*v)
+      end
 
       def fetch(key, default = nil, &block)
         if block_given? && default

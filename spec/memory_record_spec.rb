@@ -201,4 +201,14 @@ RSpec.describe MemoryRecord do
       end
     end
   end
+
+  it "can call that lookup from foobar when updating inherited lookup" do
+    model = class_new [{key: :a}]
+    model.singleton_class.class_eval do
+      def lookup(*)
+        super.key
+      end
+    end
+    model[:a].should == :a
+  end
 end
