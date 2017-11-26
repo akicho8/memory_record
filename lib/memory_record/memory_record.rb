@@ -157,10 +157,13 @@ module MemoryRecord
       def memory_record_reset(records)
         @keys = nil
         @codes = nil
+
         @values = records.collect.with_index { |e, i|
           new(_attributes_normalize(e, i))
         }.freeze
+
         @values_hash = {}
+
         [:code, :key].each do |pk|
           @values_hash[pk] = @values.inject({}) do |a, e|
             a.merge(e.send(pk) => e) do |key, a, b|
