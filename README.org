@@ -110,6 +110,35 @@ Foo.fetch_if(:a)             # => #<Foo:... @attributes={...}>
 Foo.fetch_if(:xxx)           # => <KeyError: ...>
 #+END_SRC
 
+*** How to refer to other keys
+
+#+BEGIN_SRC ruby
+class Foo
+  include MemoryRecord
+  memory_record [
+    {key: :a, other_key: :x},
+    {key: :b, other_key: :y},
+    {key: :c, other_key: :z},
+  ]
+
+  class << self
+    def lookup(v)
+      super || invert_table[v]
+    end
+
+    private
+
+    def invert_table
+      @invert_table ||= inject({}) {|a, e| a.merge(e.other_key => e) }
+    end
+  end
+end
+
+Foo[:a] == Foo[:x]                  # => true
+Foo[:b] == Foo[:y]                  # => true
+Foo[:c] == Foo[:z]                  # => true
+#+END_SRC
+
 *** How can I prohibit the hash key from being attr_reader automatically?
 
 **** attr_reader: false
@@ -182,4 +211,3 @@ Foo.collect(&:code) # => [1, 2, 3]
 
     It is not recommended to specify it explicitly.
     It is useful only when refactoring legacy code with compatibility in mind.
-
