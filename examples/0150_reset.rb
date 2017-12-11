@@ -8,14 +8,14 @@ end
 
 C.keys                          # => [:a]
 
-# memory_record では更新できない
+# Can not update with memory_record
 class C
   memory_record [{key: :b}]
 end
 
 C.keys                          # => [:a]
 
-# memory_record_reset を使うこと
+# With memory_record_reset you can rebuild data
 C.memory_record_reset [{key: :c}]
 
 C.keys                          # => [:c]

@@ -17,6 +17,6 @@ class Foo
   end
 end
 
-v = Foo.first # => #<Foo:0x007f8de5198398 @attributes={:key=>:a, :code=>0}, @var=1>
+v = Foo.first # => #<Foo:0x007fd0c09cfc50 @attributes={:key=>:a, :code=>0}, @var=1>
 v.frozen?     # => true
 v.a           # => 1

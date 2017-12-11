@@ -1,6 +1,7 @@
 * MemoryRecord
 
-  A simple library that handles a few records easily
+  A simple library that handles a few records easily.
+  With this library can flexibly managed immutable data.
 
 ** Installation
 

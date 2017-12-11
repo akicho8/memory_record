@@ -4,8 +4,8 @@ require 'memory_record'
 class Foo
   include MemoryRecord
   memory_record [
-    {key: '↑', name: '上'},
+    {key: '↑', name: 'UP'},
   ]
 end
 
-Foo['↑'].name                  # => "上"
+Foo['↑'].name                  # => "UP"

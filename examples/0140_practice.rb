@@ -9,7 +9,7 @@ class Direction
   ]
 
   def long_name
-    "#{name}方向"
+    "#{name} direction"
   end
 end
 
@@ -19,7 +19,7 @@ Direction.keys                  # => [:left, :right]
 Direction[:right].key           # => :right
 Direction[:right].code          # => 1
 Direction[:right].vector        # => [1, 0]
-Direction[:right].long_name     # => "→方向"
+Direction[:right].long_name     # => "→ direction"
 
 Direction[1].key                # => :right
 

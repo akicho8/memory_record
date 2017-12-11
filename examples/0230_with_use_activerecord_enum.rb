@@ -3,7 +3,7 @@ require 'memory_record'
 
 require 'active_record'
 
-ActiveRecord::VERSION::STRING   # => "5.1.3"
+ActiveRecord::VERSION::STRING   # => "5.1.4"
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
