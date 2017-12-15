@@ -211,4 +211,22 @@ RSpec.describe MemoryRecord do
     end
     model[:a].should == :a
   end
+
+  it "minus" do
+    m = class_new [{key: :a}, {key: :b}]
+    ([m[:a], m[:b]] - [m[:a]]).should == [m[:b]]
+  end
+
+  describe "sort (<=> method)" do
+    it "same class" do
+      m = class_new [{key: :a}, {key: :b}]
+      [m[:b], m[:a]].sort.should == [m[:a], m[:b]]
+    end
+
+    it "different class" do
+      m1 = class_new [{key: :a}, {key: :b}]
+      m2 = class_new [{key: :a}, {key: :b}]
+      expect { [m1[:b], m2[:a]].sort }.to raise_error(ArgumentError)
+    end
+  end
 end

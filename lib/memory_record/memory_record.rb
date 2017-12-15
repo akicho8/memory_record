@@ -66,18 +66,24 @@ module MemoryRecord
       # Define it to an ancestor so that super method can be used.
       include Module.new.tap { |m|
         ([:key, :code] + attr_reader_args).uniq.each do |key|
-          m.class_eval do
+          m.module_eval do
             define_method(key) { @attributes[key.to_sym] }
           end
         end
 
         unless m.method_defined?(:name)
-          m.class_eval do
+          m.module_eval do
             define_method(:name) do
               if self.class.name
                 self.class.human_attribute_name(key)
               end
             end
+          end
+        end
+
+        m.module_eval do
+          def <=>(other)
+            [self.class, code] <=> [other.class, other.code]
           end
         end
       }
