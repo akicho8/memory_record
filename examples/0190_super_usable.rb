@@ -17,4 +17,4 @@ class Foo
 end
 
 Foo.first.a                     # => 20
-Foo.first.name                  # => "(Key0)"
+Foo.first.name                  # => "(_key0)"

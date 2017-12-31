@@ -13,5 +13,5 @@ class Foo
   ]
 end
 
-Foo["01"] # => #<Foo:0x007f9db5ac1b10 @attributes={:key=>:"01", :name=>"left", :code=>0}>
-Foo["02"] # => #<Foo:0x007f9db5ac15e8 @attributes={:key=>:"02", :name=>"right", :code=>1}>
+Foo["01"] # => #<Foo:0x00007f9e519ba6d0 @attributes={:key=>:"01", :name=>"left", :code=>0}>
+Foo["02"] # => #<Foo:0x00007f9e519ba568 @attributes={:key=>:"02", :name=>"right", :code=>1}>
