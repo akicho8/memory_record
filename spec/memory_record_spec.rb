@@ -24,8 +24,6 @@ RSpec.describe MemoryRecord do
     }
   end
 
-  let(:instance) { Model.first }
-
   context 'Useful Class Methods' do
     it 'each' do
       assert Model.each
@@ -60,22 +58,22 @@ RSpec.describe MemoryRecord do
 
   context 'Subscript access to instance' do
     it do
-      instance[:name].should == 'A'
-      instance[:xxxx].should == nil
+      Model.first[:name].should == 'A'
+      Model.first[:xxxx].should == nil
     end
   end
 
   context 'to_s' do
     it do
-      instance.to_s.should == 'A'
+      Model.first.to_s.should == 'A'
     end
   end
 
   context 'instance accessor' do
     it do
-      assert instance.attributes
-      assert instance.key
-      assert instance.code
+      assert Model.first.attributes
+      assert Model.first.key
+      assert Model.first.code
     end
   end
 
@@ -154,7 +152,6 @@ RSpec.describe MemoryRecord do
       expect { Model.memory_record_reset([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
     end
   end
-
 
   describe 'attr_reader option' do
     def element(options)
