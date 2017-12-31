@@ -3,7 +3,8 @@ require 'active_support/concern'
 require 'active_support/core_ext/module/concerning'
 require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/array/wrap'
-require 'active_model'
+require 'active_support/core_ext/array/wrap'
+require 'active_support/core_ext/module/delegation'
 
 module MemoryRecord
   extend ActiveSupport::Concern
