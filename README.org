@@ -83,7 +83,7 @@ object.code # => 1
 
 *** =name= method is special?
 
-    If =name= is not defined, it defines a =name= method that returns a translation of =key=
+    If =name= is not defined, it defines a =name= method that returns =key.to_s=
 
 *** =to_s= method is defined?
 

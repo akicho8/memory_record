@@ -32,7 +32,6 @@ module MemoryRecord
         records = block.call
       end
 
-      extend ActiveModel::Translation
       extend Enumerable
       include ::MemoryRecord::SingletonMethods
 
@@ -73,11 +72,7 @@ module MemoryRecord
 
         unless m.method_defined?(:name)
           m.module_eval do
-            define_method(:name) do
-              if self.class.name
-                self.class.human_attribute_name(key)
-              end
-            end
+            define_method(:name) { key.to_s }
           end
         end
 

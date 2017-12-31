@@ -97,8 +97,9 @@ RSpec.describe MemoryRecord do
     end
 
     it 'Name method is automatically defined if it is not defined' do
-      model = class_new []
+      model = class_new [{key: :foo}]
       assert_equal true, model.instance_methods.include?(:name)
+      assert_equal "foo", model[:foo].name
     end
   end
 
@@ -154,13 +155,6 @@ RSpec.describe MemoryRecord do
     end
   end
 
-  describe 'Human_attribute_name can not be used in anonymous class' do
-    let(:model) { class_new [{foo: 1}] }
-
-    it 'It does not cause an error' do
-      model.first.name.should == nil
-    end
-  end
 
   describe 'attr_reader option' do
     def element(options)
