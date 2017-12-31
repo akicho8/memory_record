@@ -121,7 +121,7 @@ module MemoryRecord
 
       def fetch(key, default = nil, &block)
         if block_given? && default
-          raise ArgumentError
+          raise ArgumentError, "Can't use default and block together"
         end
 
         v = lookup(key)
