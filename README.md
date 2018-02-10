@@ -1,28 +1,34 @@
-* MemoryRecord
+# MemoryRecord
 
-  A simple library that handles a few records easily.
-  With this library can flexibly managed immutable data.
+[![Build Status](https://travis-ci.org/akicho8/memory_record.svg?branch=master)](https://travis-ci.org/akicho8/memory_record)
+[![Gem Version](https://badge.fury.io/rb/memory_record.svg)](https://badge.fury.io/rb/memory_record)
+[![Dependency Status](https://gemnasium.com/badges/github.com/akicho8/memory_record.svg)](https://gemnasium.com/github.com/akicho8/memory_record)
 
-** Installation
+## Introduction
 
-   Install as a standalone gem
+A simple library that handles a few records easily.
+With this library can flexibly managed immutable data.
 
-#+BEGIN_SRC shell
+## Installation
+
+Install as a standalone gem
+
+```shell
 $ gem install memory_record
-#+END_SRC
+```
 
 Or install within application using Gemfile
 
-#+BEGIN_SRC shell
+```shell
 $ bundle add memory_record
 $ bundle install
-#+END_SRC
+```
 
-** Examples
+## Examples
 
-*** Basic usage
+### Basic usage
 
-#+BEGIN_SRC ruby
+```ruby
 class Language
   include MemoryRecord
   memory_record [
@@ -43,77 +49,77 @@ Language[:ruby].mr_author  # => "Mr. Yukihiro Matsumoto"
 
 Language.keys              # => [:lisp, :c, :ruby]
 Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Matsumoto"]
-#+END_SRC
+```
 
-*** How to turn as an array?
+### How to turn as an array?
 
-    =Enumerable= extended, so that =each= method is available
+**Enumerable** extended, so that **each** method is available
 
-#+BEGIN_SRC ruby
+```ruby
 Foo.each { |e| ... }
 Foo.collect { |e| ... }
-#+END_SRC
+```
 
-*** How do I submit a form to select in Rails?
+### How do I submit a form to select in Rails?
 
-#+BEGIN_SRC ruby
+```ruby
 form.collection_select(:selection_code, Foo, :code, :name)
-#+END_SRC
+```
 
-*** Is the reference in subscripts slow?
+### Is the reference in subscripts slow?
 
-    Since it has a hash internally using the key value as a key, it can be acquired with O (1).
+Since it has a hash internally using the key value as a key, it can be acquired with O (1).
 
-#+BEGIN_SRC ruby
+```ruby
 Foo[1].name  # => "A"
 Foo[:a].name # => "A"
-#+END_SRC
+```
 
-*** Instances always react to =code= and =key=
+### Instances always react to **code** and **key**
 
-#+BEGIN_SRC ruby
+```ruby
 object = Foo.first
 object.key  # => :a
 object.code # => 1
-#+END_SRC
+```
 
-*** How do I add a method to an instance?
+### How do I add a method to an instance?
 
     For that, I am creating a new class so I need to define it normally
 
-*** =name= method is special?
+### **name** method is special?
 
-    If =name= is not defined, it defines a =name= method that returns =key.to_s=
+    If **name** is not defined, it defines a **name** method that returns **key.to_s**
 
-*** =to_s= method is defined?
+### **to_s** method is defined?
 
-    Alias of =name=, =to_s= is defined.
+    Alias of **name**, **to_s** is defined.
 
-*** If there is no key, use fetch to get an error
+### If there is no key, use fetch to get an error
 
-#+BEGIN_SRC ruby
+```ruby
 Foo.fetch(:xxx)              # => <KeyError: ...>
-#+END_SRC
+```
 
     The following are all the same
 
-#+BEGIN_SRC ruby
+```ruby
 Foo[:xxx] || :default        # => :default
 Foo.fetch(:xxx, :default}    # => :default
 Foo.fetch(:xxx) { :default } # => :default
-#+END_SRC
+```
 
-*** Use fetch_if to ignore if the key is nil
+### Use fetch_if to ignore if the key is nil
 
-#+BEGIN_SRC ruby
+```ruby
 Foo.fetch_if(nil)            # => nil
 Foo.fetch_if(:a)             # => #<Foo:... @attributes={...}>
 Foo.fetch_if(:xxx)           # => <KeyError: ...>
-#+END_SRC
+```
 
-*** How to refer to other keys
+### How to refer to other keys
 
-#+BEGIN_SRC ruby
+```ruby
 class Foo
   include MemoryRecord
   memory_record [
@@ -138,15 +144,15 @@ end
 Foo[:a] == Foo[:x]                  # => true
 Foo[:b] == Foo[:y]                  # => true
 Foo[:c] == Foo[:z]                  # => true
-#+END_SRC
+```
 
-*** How can I prohibit the hash key from being attr_reader automatically?
+### How can I prohibit the hash key from being attr_reader automatically?
 
-**** attr_reader: false
+#### attr_reader: false
 
 I think that it is better to use it when you want to make it difficult to access easily.
 
-#+BEGIN_SRC ruby
+```ruby
 class Foo
   include MemoryRecord
   memory_record attr_reader: false do
@@ -159,11 +165,11 @@ end
 Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb2c710eda8>>
 Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007fb2c710eda8>>
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c710eda8>>
-#+END_SRC
+```
 
-**** attr_reader: {only: :y}
+#### attr_reader: {only: :y}
 
-#+BEGIN_SRC ruby
+```ruby
 class Foo
   include MemoryRecord
   memory_record attr_reader: {only: :y} do
@@ -176,11 +182,11 @@ end
 Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fcc861ff108>>
 Foo.first.y rescue $! # => 1
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fcc861ff108>>
-#+END_SRC
+```
 
-**** attr_reader: {except: :y}
+#### attr_reader: {except: :y}
 
-#+BEGIN_SRC ruby
+```ruby
 class Foo
   include MemoryRecord
   memory_record attr_reader: {except: :y} do
@@ -193,11 +199,11 @@ end
 Foo.first.x rescue $! # => 1
 Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007ff033895e88>>
 Foo.first.z rescue $! # => 1
-#+END_SRC
+```
 
-*** How to decide =code= yourself?
+*** How to decide **code** yourself?
 
-#+BEGIN_SRC ruby
+```ruby
 class Foo
   include MemoryRecord
   memory_record [
@@ -208,7 +214,7 @@ class Foo
 end
 
 Foo.collect(&:code) # => [1, 2, 3]
-#+END_SRC
+```
 
-    It is not recommended to specify it explicitly.
-    It is useful only when refactoring legacy code with compatibility in mind.
+It is not recommended to specify it explicitly.
+It is useful only when refactoring legacy code with compatibility in mind.
