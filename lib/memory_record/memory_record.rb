@@ -78,6 +78,7 @@ module MemoryRecord
         end
 
         m.module_eval do
+          # sort matches definition order
           def <=>(other)
             [self.class, code] <=> [other.class, other.code]
           end
