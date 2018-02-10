@@ -82,6 +82,11 @@ module MemoryRecord
           def <=>(other)
             [self.class, code] <=> [other.class, other.code]
           end
+
+          # Even if duplicate, objects match
+          def ==(other)
+            self.class == other.class && key == other.key
+          end
         end
       }
 

@@ -220,4 +220,10 @@ RSpec.describe MemoryRecord do
       expect { [m1[:b], m2[:a]].sort }.to raise_error(ArgumentError)
     end
   end
+
+  it "==" do
+    a = Model.fetch(:_key0)
+    b = Marshal.load(Marshal.dump(a))
+    (a == b).should == true
+  end
 end
