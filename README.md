@@ -85,15 +85,15 @@ object.code # => 1
 
 ### How do I add a method to an instance?
 
-    For that, I am creating a new class so I need to define it normally
+For that, I am creating a new class so I need to define it normally
 
 ### **name** method is special?
 
-    If **name** is not defined, it defines a **name** method that returns **key.to_s**
+If **name** is not defined, it defines a **name** method that returns **key.to_s**
 
 ### **to_s** method is defined?
 
-    Alias of **name**, **to_s** is defined.
+Alias of **name**, **to_s** is defined.
 
 ### If there is no key, use fetch to get an error
 
@@ -101,7 +101,7 @@ object.code # => 1
 Foo.fetch(:xxx)              # => <KeyError: ...>
 ```
 
-    The following are all the same
+The following are all the same
 
 ```ruby
 Foo[:xxx] || :default        # => :default
