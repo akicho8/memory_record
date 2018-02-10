@@ -226,4 +226,12 @@ RSpec.describe MemoryRecord do
     b = Marshal.load(Marshal.dump(a))
     (a == b).should == true
   end
+
+  it "eql?, hash" do
+    a = Model.fetch(:_key0)
+    b = Marshal.load(Marshal.dump(a))
+    h = {}
+    h[a] = true
+    h[b].should == true
+  end
 end

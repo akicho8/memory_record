@@ -87,6 +87,15 @@ module MemoryRecord
           def ==(other)
             self.class == other.class && key == other.key
           end
+
+          # Even if object_id of objects used as hash keys are different, they match. It also speeds up by defining hash.
+          def eql?(other)
+            self.class == other.class && key == other.key
+          end
+
+          def hash
+            key.hash
+          end
         end
       }
 
