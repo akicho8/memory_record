@@ -92,7 +92,7 @@ module MemoryRecord
           end
 
           def hash
-            key.hash
+            self.class.hash ^ key.hash
           end
         end
       }
