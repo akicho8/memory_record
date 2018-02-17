@@ -29,26 +29,32 @@ $ bundle install
 ### Basic usage
 
 ```ruby
-class Language
+class Palette
   include MemoryRecord
   memory_record [
-    {key: :lisp, author: "John McCarthy"      },
-    {key: :c,    author: "Dennis Ritchie"     },
-    {key: :ruby, author: "Yukihiro Matsumoto" },
+    { key: :coral,  r: 255, g: 127, b:   0 },
+    { key: :tomato, r: 255, g:  99, b:  71 },
+    { key: :gold,   r: 255, g: 215, b:   0 },
   ]
 
-  def mr_author
-    "Mr. #{author}"
+  def rgb
+    [r, g, b]
+  end
+
+  def hex
+    "#" + rgb.collect { |e| "%02X" % e }.join
+  end
+
+  def name
+    super.capitalize
   end
 end
 
-Language[:ruby].key        # => :ruby
-Language[:ruby].code       # => 2
-Language[:ruby].author     # => "Yukihiro Matsumoto"
-Language[:ruby].mr_author  # => "Mr. Yukihiro Matsumoto"
-
-Language.keys              # => [:lisp, :c, :ruby]
-Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Matsumoto"]
+Palette[:tomato].key   # => :tomato
+Palette[:tomato].name  # => "Tomato"
+Palette[:tomato].rgb   # => [255, 99, 71]
+Palette[:tomato].hex   # => "#FF6347"
+Palette.collect(&:hex) # => ["#FF7F00", "#FF6347", "#FFD700"]
 ```
 
 ### How to turn as an array?
@@ -56,14 +62,14 @@ Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Ma
 **Enumerable** extended, so that **each** method is available
 
 ```ruby
-Foo.each { |e| ... }
-Foo.collect { |e| ... }
+Palette.each { |e| ... }
+Palette.collect { |e| ... }
 ```
 
 ### How do I submit a form to select in Rails?
 
 ```ruby
-form.collection_select(:selection_code, Foo, :code, :name)
+form.collection_select(:selection_code, Palette, :code, :name)
 ```
 
 ### Is the reference in subscripts slow?
@@ -71,15 +77,15 @@ form.collection_select(:selection_code, Foo, :code, :name)
 Since it has a hash internally using the key value as a key, it can be acquired with O (1).
 
 ```ruby
-Foo[1].name  # => "A"
-Foo[:a].name # => "A"
+Palette[1].name       # => "Tomato"
+Palette[:tomato].name # => "Tomato"
 ```
 
 ### Instances always react to **code** and **key**
 
 ```ruby
-object = Foo.first
-object.key  # => :a
+object = Palette[:tomato]
+object.key  # => :tomato
 object.code # => 1
 ```
 
@@ -98,23 +104,23 @@ Alias of **name**, **to_s** is defined.
 ### If there is no key, use fetch to get an error
 
 ```ruby
-Foo.fetch(:xxx)              # => <KeyError: ...>
+Palette.fetch(:xxx)              # => <KeyError: ...>
 ```
 
 The following are all the same
 
 ```ruby
-Foo[:xxx] || :default        # => :default
-Foo.fetch(:xxx, :default}    # => :default
-Foo.fetch(:xxx) { :default } # => :default
+Palette[:xxx] || :default        # => :default
+Palette.fetch(:xxx, :default}    # => :default
+Palette.fetch(:xxx) { :default } # => :default
 ```
 
 ### Use fetch_if to ignore if the key is nil
 
 ```ruby
-Foo.fetch_if(nil)            # => nil
-Foo.fetch_if(:a)             # => #<Foo:... @attributes={...}>
-Foo.fetch_if(:xxx)           # => <KeyError: ...>
+Palette.fetch_if(nil)            # => nil
+Palette.fetch_if(:tomato)        # => #<Palette:... @attributes={...}>
+Palette.fetch_if(:xxx)           # => <KeyError: ...>
 ```
 
 ### How to refer to other keys
@@ -123,9 +129,9 @@ Foo.fetch_if(:xxx)           # => <KeyError: ...>
 class Foo
   include MemoryRecord
   memory_record [
-    {key: :a, other_key: :x},
-    {key: :b, other_key: :y},
-    {key: :c, other_key: :z},
+    { key: :a, other_key: :x },
+    { key: :b, other_key: :y },
+    { key: :c, other_key: :z },
   ]
 
   class << self
@@ -146,35 +152,16 @@ Foo[:b] == Foo[:y]                  # => true
 Foo[:c] == Foo[:z]                  # => true
 ```
 
-### How can I prohibit the hash key from being attr_reader automatically?
+### How prohibit the hash key from being attr_reader automatically?
 
-#### attr_reader: false
-
-I think that it is better to use it when you want to make it difficult to access easily.
-
-```ruby
-class Foo
-  include MemoryRecord
-  memory_record attr_reader: false do
-    [
-      {x: 1, y: 1, z: 1},
-    ]
-  end
-end
-
-Foo.first.x rescue $! # => #<NoMethodError: undefined method `x' for #<Foo:0x007fb2c710eda8>>
-Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007fb2c710eda8>>
-Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fb2c710eda8>>
-```
-
-#### attr_reader: {only: :y}
+Use `attr_reader: false` or `attr_reader: {only: ...}` or `attr_reader: {except: ...}`
 
 ```ruby
 class Foo
   include MemoryRecord
   memory_record attr_reader: {only: :y} do
     [
-      {x: 1, y: 1, z: 1},
+      { x: 1, y: 1, z: 1 },
     ]
   end
 end
@@ -184,36 +171,18 @@ Foo.first.y rescue $! # => 1
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fcc861ff108>>
 ```
 
-#### attr_reader: {except: :y}
-
-```ruby
-class Foo
-  include MemoryRecord
-  memory_record attr_reader: {except: :y} do
-    [
-      {x: 1, y: 1, z: 1},
-    ]
-  end
-end
-
-Foo.first.x rescue $! # => 1
-Foo.first.y rescue $! # => #<NoMethodError: undefined method `y' for #<Foo:0x007ff033895e88>>
-Foo.first.z rescue $! # => 1
-```
-
 *** How to decide **code** yourself?
 
 ```ruby
 class Foo
   include MemoryRecord
   memory_record [
-    {code: 1, key: :a, name: "A"},
-    {code: 2, key: :b, name: "B"},
-    {code: 3, key: :c, name: "C"},
+    { code: 1, key: :a, name: "A" },
+    { code: 2, key: :b, name: "B" },
   ]
 end
 
-Foo.collect(&:code) # => [1, 2, 3]
+Foo.collect(&:code) # => [1, 2]
 ```
 
 It is not recommended to specify it explicitly.

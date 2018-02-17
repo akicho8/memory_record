@@ -1,23 +1,29 @@
 $LOAD_PATH.unshift '../lib'
 require 'memory_record'
 
-class Language
+class Palette
   include MemoryRecord
   memory_record [
-    {key: :lisp, author: "John McCarthy"      },
-    {key: :c,    author: "Dennis Ritchie"     },
-    {key: :ruby, author: "Yukihiro Matsumoto" },
+    { key: :coral,  r: 255, g: 127, b:   0 },
+    { key: :tomato, r: 255, g:  99, b:  71 },
+    { key: :gold,   r: 255, g: 215, b:   0 },
   ]
 
-  def mr_author
-    "Mr. #{author}"
+  def rgb
+    [r, g, b]
+  end
+
+  def hex
+    "#" + rgb.collect { |e| "%02X" % e }.join
+  end
+
+  def name
+    super.capitalize
   end
 end
 
-Language[:ruby].key        # => :ruby
-Language[:ruby].code       # => 2
-Language[:ruby].author     # => "Yukihiro Matsumoto"
-Language[:ruby].mr_author  # => "Mr. Yukihiro Matsumoto"
-
-Language.keys              # => [:lisp, :c, :ruby]
-Language.collect(&:author) # => ["John McCarthy", "Dennis Ritchie", "Yukihiro Matsumoto"]
+Palette[:tomato].key        # => :tomato
+Palette[:tomato].name       # => "Tomato"
+Palette[:tomato].rgb        # => [255, 99, 71]
+Palette[:tomato].hex        # => "#FF6347"
+Palette.collect(&:hex)      # => ["#FF7F00", "#FF6347", "#FFD700"]
