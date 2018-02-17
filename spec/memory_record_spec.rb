@@ -71,6 +71,7 @@ RSpec.describe MemoryRecord do
 
   context 'instance accessor' do
     it do
+      assert Model.first.to_h
       assert Model.first.attributes
       assert Model.first.key
       assert Model.first.code

@@ -205,7 +205,7 @@ module MemoryRecord
 
     attr_reader :attributes
 
-    delegate :[], to: :attributes
+    delegate :[], :to_h, to: :attributes
     delegate :to_s, to: :name
 
     def initialize(attributes)
