@@ -15,5 +15,5 @@ class C
   end
 end
 
-C.lookup(:alice)                # => #<C:0x00007ffe599ba4d8 @attributes={:key=>:alice, :code=>0}>
-C[:alice]                       # => #<C:0x00007ffe599ba4d8 @attributes={:key=>:alice, :code=>0}>
+C.lookup(:alice)                # => #<C:0x00007fa9dc11d8b0 @attributes={:key=>:alice, :code=>0}>
+C[:alice]                       # => #<C:0x00007fa9dc11d8b0 @attributes={:key=>:alice, :code=>0}>

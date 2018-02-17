@@ -62,38 +62,32 @@ module MemoryRecord
       end
 
       # Define it to an ancestor so that super method can be used.
-      include Module.new.tap { |m|
+      include Module.new {
         ([:key, :code] + attr_reader_args).uniq.each do |key|
-          m.module_eval do
-            define_method(key) { @attributes[key.to_sym] }
-          end
+          define_method(key) { @attributes[key.to_sym] }
         end
 
-        unless m.method_defined?(:name)
-          m.module_eval do
-            define_method(:name) { key.to_s }
-          end
+        unless method_defined?(:name)
+          define_method(:name) { key.to_s }
         end
 
-        m.module_eval do
-          # sort matches definition order
-          def <=>(other)
-            [self.class, code] <=> [other.class, other.code]
-          end
+        # sort matches definition order
+        def <=>(other)
+          [self.class, code] <=> [other.class, other.code]
+        end
 
-          # Even if duplicate, objects match
-          def ==(other)
-            self.class == other.class && key == other.key
-          end
+        # Even if duplicate, objects match
+        def ==(other)
+          self.class == other.class && key == other.key
+        end
 
-          # Even if object_id of objects used as hash keys are different, they match. It also speeds up by defining hash.
-          def eql?(other)
-            self.class == other.class && key == other.key
-          end
+        # Even if object_id of objects used as hash keys are different, they match. It also speeds up by defining hash.
+        def eql?(other)
+          self.class == other.class && key == other.key
+        end
 
-          def hash
-            self.class.hash ^ key.hash
-          end
+        def hash
+          self.class.hash ^ key.hash
         end
       }
 
