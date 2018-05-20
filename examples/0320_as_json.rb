@@ -40,3 +40,5 @@ ColorInfo.first.as_json(only: :key)                                 # => {:key=>
 ColorInfo.first.as_json(except: [:rgb, :code, :a])                  # => {:key=>:blue}
 ColorInfo.first.as_json(only: [], methods: :hex)                    # => {:hex=>"#0000FF"}
 ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ) # => {:children=>[{"a"=>1}, {"a"=>1}, {:a=>1}]}
+
+ColorInfo.as_json(only: :key)   # => [{:key=>:blue}, {:key=>:red}]

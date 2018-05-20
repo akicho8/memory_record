@@ -207,14 +207,17 @@ class ColorInfo
 
   def children
     [
-      {foo: 1, bar: 3},
-      {foo: 2, bar: 4},
+      {x: 1, y: 2},
+      {x: 3, y: 4},
     ]
   end
 end
 
-ColorInfo.first.as_json(only: :key)              # => {:key => :blue}
-ColorInfo.first.as_json(except: [:rgb, :code])   # => {:key => :blue}
-ColorInfo.first.as_json(only: [], methods: :hex) # => {:hex => "#0000FF"}
-ColorInfo.first.as_json(only: [], include: {children: {only: :foo}} ).should == {:children => [{"foo" => 1}, {"foo" => 2}]}
+color_info = ColorInfo.first
+color_info.as_json(only: :key)              # => {:key => :blue}
+color_info.as_json(except: [:rgb, :code])   # => {:key => :blue}
+color_info.as_json(only: [], methods: :hex) # => {:hex => "#0000FF"}
+color_info.as_json(only: [], include: {children: {only: :x}} ) # => {:children => [{"x" => 1}, {"x" => 3}]}
+
+ColorInfo.as_json(only: :key)               # => [{:key=>:blue}, {:key=>:red}]
 ```

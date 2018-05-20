@@ -275,6 +275,7 @@ RSpec.describe MemoryRecord do
       ColorInfo.first.as_json(except: [:rgb, :code, :a]).should                  == {:key => :blue}
       ColorInfo.first.as_json(only: [], methods: :hex).should                    == {:hex => "#0000FF"}
       ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ).should == {:children => [{"a" => 1}, {"a" => 1}, {:a => 1}]}
+      ColorInfo.as_json(only: :key).should                                       == [{:key => :blue}, {:key => :red}]
     end
   end
 end
