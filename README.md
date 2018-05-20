@@ -220,4 +220,5 @@ color_info.as_json(only: [], methods: :hex) # => {:hex => "#0000FF"}
 color_info.as_json(only: [], include: {children: {only: :x}} ) # => {:children => [{"x" => 1}, {"x" => 3}]}
 
 ColorInfo.as_json(only: :key)               # => [{:key=>:blue}, {:key=>:red}]
+ColorInfo.to_json(only: :key)               # => "[{\"key\":\"blue\"},{\"key\":\"red\"}]"
 ```
