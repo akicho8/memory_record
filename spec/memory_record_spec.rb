@@ -235,4 +235,46 @@ RSpec.describe MemoryRecord do
     h[a] = true
     h[b].should == true
   end
+
+  context 'as_json' do
+    require "active_model"
+
+    class Person
+      include ActiveModel::Model
+      include ActiveModel::Serializers::JSON
+
+      attr_accessor :a
+
+      def attributes
+        {'a' => a}
+      end
+    end
+
+    class ColorInfo
+      include MemoryRecord
+      memory_record [
+        { key: :blue, rgb: [  0, 0, 255], a: 1},
+        { key: :red,  rgb: [255, 0,   0], a: 2},
+      ]
+
+      def hex
+        "#" + rgb.collect { |e| "%02X" % e }.join
+      end
+
+      def children
+        [
+          {a: 1, b: 2},
+          Person.new(a: 1),
+          ColorInfo[:blue],
+        ]
+      end
+    end
+
+    it "as_json(options)" do
+      ColorInfo.first.as_json(only: :key).should                                 == {:key => :blue}
+      ColorInfo.first.as_json(except: [:rgb, :code, :a]).should                  == {:key => :blue}
+      ColorInfo.first.as_json(only: [], methods: :hex).should                    == {:hex => "#0000FF"}
+      ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ).should == {:children => [{"a" => 1}, {"a" => 1}, {:a => 1}]}
+    end
+  end
 end

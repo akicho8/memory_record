@@ -171,7 +171,7 @@ Foo.first.y rescue $! # => 1
 Foo.first.z rescue $! # => #<NoMethodError: undefined method `z' for #<Foo:0x007fcc861ff108>>
 ```
 
-*** How to decide **code** yourself?
+### How to decide **code** yourself?
 
 ```ruby
 class Foo
@@ -187,3 +187,33 @@ Foo.collect(&:code) # => [1, 2]
 
 It is not recommended to specify it explicitly.
 It is useful only when refactoring legacy code with compatibility in mind.
+
+### Convert to JSON
+
+Similar to ActiveModel's serialization, there is an `only` `except` `methods` `include` method.
+
+```ruby
+class ColorInfo
+  include MemoryRecord
+  memory_record [
+    { key: :blue, rgb: [  0, 0, 255], },
+    { key: :red,  rgb: [255, 0,   0], },
+  ]
+
+  def hex
+    "#" + rgb.collect { |e| "%02X" % e }.join
+  end
+
+  def children
+    [
+      {foo: 1, bar: 3},
+      {foo: 2, bar: 4},
+    ]
+  end
+end
+
+ColorInfo.first.as_json(only: :key)              # => {:key => :blue}
+ColorInfo.first.as_json(except: [:rgb, :code])   # => {:key => :blue}
+ColorInfo.first.as_json(only: [], methods: :hex) # => {:hex => "#0000FF"}
+ColorInfo.first.as_json(only: [], include: {children: {only: :foo}} ).should == {:children => [{"foo" => 1}, {"foo" => 2}]}
+```

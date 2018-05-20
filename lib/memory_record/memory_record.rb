@@ -4,6 +4,10 @@ require 'active_support/core_ext/module/concerning'
 require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/module/delegation'
 
+# json serialization
+require 'active_support/core_ext/object/json' # as_json
+require 'memory_record/memory_record/serialization'
+
 module MemoryRecord
   extend ActiveSupport::Concern
 
@@ -33,6 +37,7 @@ module MemoryRecord
 
       extend Enumerable
       include ::MemoryRecord::SingletonMethods
+      include ::MemoryRecord::Serialization
 
       class_attribute :memory_record_options
       self.memory_record_options = {
