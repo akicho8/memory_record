@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/akicho8/memory_record.svg?branch=master)](https://travis-ci.org/akicho8/memory_record)
 [![Gem Version](https://badge.fury.io/rb/memory_record.svg)](https://badge.fury.io/rb/memory_record)
-[![Dependency Status](https://gemnasium.com/badges/github.com/akicho8/memory_record.svg)](https://gemnasium.com/github.com/akicho8/memory_record)
+
+<!-- [![Dependency Status](https://gemnasium.com/badges/github.com/akicho8/memory_record.svg)](https://gemnasium.com/github.com/akicho8/memory_record) -->
 
 ## Introduction
 
