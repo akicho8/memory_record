@@ -1,5 +1,13 @@
 require 'spec_helper'
 
+class Model5
+  include MemoryRecord
+  memory_record [
+    { key: :a },
+    { key: :b },
+  ]
+end
+
 class Model
   include MemoryRecord
   memory_record [
@@ -222,18 +230,29 @@ RSpec.describe MemoryRecord do
     end
   end
 
-  it "==" do
-    a = Model.fetch(:_key0)
-    b = Marshal.load(Marshal.dump(a))
-    (a == b).should == true
-  end
-
   it "eql?, hash" do
     a = Model.fetch(:_key0)
     b = Marshal.load(Marshal.dump(a))
     h = {}
     h[a] = true
     h[b].should == true
+  end
+
+  describe "Comparable operator" do
+    it do
+      model = class_new [
+        { key: :a },
+        { key: :b },
+      ]
+      (model[:a] < model[:b]).should == true
+      (model[:a] == model[:a]).should == true
+    end
+
+    it "==" do
+      a = Model5.first
+      b = Marshal.load(Marshal.dump(a))
+      (a == b).should == true
+    end
   end
 
   context 'as_json' do

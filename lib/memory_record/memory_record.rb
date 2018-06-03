@@ -36,6 +36,7 @@ module MemoryRecord
       end
 
       extend Enumerable
+      include Comparable
       include ::MemoryRecord::SingletonMethods
       include ::MemoryRecord::Serialization
 
@@ -76,14 +77,9 @@ module MemoryRecord
           define_method(:name) { key.to_s }
         end
 
-        # sort matches definition order
+        # sort matches definition order. Comparable module methods will be available.
         def <=>(other)
           [self.class, code] <=> [other.class, other.code]
-        end
-
-        # Even if duplicate, objects match
-        def ==(other)
-          self.class == other.class && key == other.key
         end
 
         # Even if object_id of objects used as hash keys are different, they match. It also speeds up by defining hash.
