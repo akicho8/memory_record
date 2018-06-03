@@ -1,30 +1,30 @@
 require 'spec_helper'
 
-class Model5
-  include MemoryRecord
-  memory_record [
-    { key: :a },
-    { key: :b },
-  ]
-end
-
-class Model
-  include MemoryRecord
-  memory_record [
-    {name: 'A'},
-    {name: 'B'},
-  ], attr_reader: :name
-end
-
-class Legacy
-  include MemoryRecord
-  memory_record [
-    {code: 10, key: :a, name: 'A'},
-    {code: 20, key: :b, name: 'B'},
-  ], attr_reader: :name
-end
-
 RSpec.describe MemoryRecord do
+  class Model5
+    include MemoryRecord
+    memory_record [
+      { key: :a },
+      { key: :b },
+    ]
+  end
+
+  class Model
+    include MemoryRecord
+    memory_record [
+      { name: 'A' },
+      { name: 'B' },
+    ], attr_reader: :name
+  end
+
+  class Legacy
+    include MemoryRecord
+    memory_record [
+      { code: 10, key: :a, name: 'A', },
+      { code: 20, key: :b, name: 'B', },
+    ], attr_reader: :name
+  end
+
   def class_new(table)
     Class.new {
       include MemoryRecord
@@ -34,21 +34,21 @@ RSpec.describe MemoryRecord do
 
   context 'Useful Class Methods' do
     it 'each' do
-      assert Model.each
+      assert { Model.each }
     end
 
     it 'keys' do
-      assert_equal [:_key0, :_key1], Model.keys
+      assert { [:_key0, :_key1] == Model.keys }
     end
 
     it 'values' do
-      assert_equal Model.each.to_a, Model.values
+      assert { Model.each.to_a == Model.values }
     end
   end
 
   context 'Subscript access to class' do
     it 'When code and key are automatically waved' do
-      assert_equal 'A', Model[0].name
+      assert { 'A' == Model[0].name }
     end
 
     it 'It will not cause an error even if there is no corresponding key' do
@@ -66,23 +66,23 @@ RSpec.describe MemoryRecord do
 
   context 'Subscript access to instance' do
     it do
-      Model.first[:name].should == 'A'
-      Model.first[:xxxx].should == nil
+      assert { Model.first[:name] == 'A' }
+      assert { Model.first[:xxxx] == nil }
     end
   end
 
   context 'to_s' do
     it do
-      Model.first.to_s.should == 'A'
+      assert { Model.first.to_s == 'A' }
     end
   end
 
   context 'instance accessor' do
     it do
-      assert Model.first.to_h
-      assert Model.first.attributes
-      assert Model.first.key
-      assert Model.first.code
+      assert { Model.first.to_h }
+      assert { Model.first.attributes }
+      assert { Model.first.key }
+      assert { Model.first.code }
     end
   end
 
@@ -92,35 +92,35 @@ RSpec.describe MemoryRecord do
       @model.memory_record_reset [{key: :b}, {key: :c}]
     end
     it 'changed' do
-      assert_equal [:b, :c], @model.keys
-      assert_equal [0, 1], @model.codes
+      assert { [:b, :c] == @model.keys }
+      assert { [0, 1] == @model.codes }
     end
   end
 
   context 'Subtle specifications' do
     it 'When keys are specified as an array, they become symbols with underscores' do
       model = class_new [{key: [:id, :desc]}]
-      assert_equal [:id_desc], model.keys
+      assert { [:id_desc] == model.keys }
     end
 
     it 'Name method is automatically defined if it is not defined' do
       model = class_new [{key: :foo}]
-      assert_equal true, model.instance_methods.include?(:name)
-      assert_equal "foo", model[:foo].name
+      assert { true == model.instance_methods.include?(:name) }
+      assert { "foo" == model[:foo].name }
     end
   end
 
   it 'Japanese can be used for key' do
     model = class_new [{key: 'あ'}]
-    assert model['あ']
+    assert { model['あ'] }
   end
 
   it 'When you define code and keys yourself' do
-    assert_equal 'A', Legacy[10].name
+    assert { 'A' == Legacy[10].name }
   end
 
   it 'We do not freeze values because memoization becomes impossible' do
-    Model.first.name.upcase!
+    assert_nothing_raised { Model.first.name.upcase! }
   end
 
   describe 'super' do
@@ -136,7 +136,7 @@ RSpec.describe MemoryRecord do
     end
 
     it 'Since methods are defined in ancestry, you can use super' do
-      assert_equal 'xy', Model2.first.var
+      assert { 'xy' == Model2.first.var }
     end
   end
 
@@ -150,15 +150,15 @@ RSpec.describe MemoryRecord do
     end
 
     it do
-      assert_equal 1, Model3.first.a
-      assert_equal nil, Model3.first.b
+      assert { 1 == Model3.first.a }
+      assert { nil == Model3.first.b }
     end
   end
 
   describe 'Do not duplicate key and code' do
     it do
-      expect { Model.memory_record_reset([{key: :a}, {key: :a}]) }.to raise_error(ArgumentError)
-      expect { Model.memory_record_reset([{code: 0}, {code: 0}]) }.to raise_error(ArgumentError)
+      assert_raises(ArgumentError) { Model.memory_record_reset([{key: :a}, {key: :a}]) }
+      assert_raises(ArgumentError) { Model.memory_record_reset([{code: 0}, {code: 0}]) }
     end
   end
 
@@ -177,27 +177,27 @@ RSpec.describe MemoryRecord do
     context 'false' do
       subject { element(attr_reader: false) }
       it do
-        assert_equal false, subject.respond_to?(:x)
-        assert_equal false, subject.respond_to?(:y)
-        assert_equal false, subject.respond_to?(:z)
+        assert { subject.respond_to?(:x) == false }
+        assert { subject.respond_to?(:y) == false }
+        assert { subject.respond_to?(:z) == false }
       end
     end
 
     context 'only' do
       subject { element(attr_reader: {only: [:x, :z]}) }
       it do
-        assert_equal true,  subject.respond_to?(:x)
-        assert_equal false, subject.respond_to?(:y)
-        assert_equal true,  subject.respond_to?(:z)
+        assert { subject.respond_to?(:x) == true  }
+        assert { subject.respond_to?(:y) == false }
+        assert { subject.respond_to?(:z) == true  }
       end
     end
 
     context 'except' do
       subject { element(attr_reader: {except: :y}) }
       it do
-        assert_equal true,  subject.respond_to?(:x)
-        assert_equal false, subject.respond_to?(:y)
-        assert_equal true,  subject.respond_to?(:z)
+        assert { subject.respond_to?(:x) == true  }
+        assert { subject.respond_to?(:y) == false }
+        assert { subject.respond_to?(:z) == true  }
       end
     end
   end
@@ -209,24 +209,24 @@ RSpec.describe MemoryRecord do
         super.key
       end
     end
-    model[:a].should == :a
+    assert { model[:a] == :a }
   end
 
   it "minus" do
     m = class_new [{key: :a}, {key: :b}]
-    ([m[:a], m[:b]] - [m[:a]]).should == [m[:b]]
+    assert { ([m[:a], m[:b]] - [m[:a]]) == [m[:b]] }
   end
 
   describe "sort (<=> method)" do
     it "same class" do
       m = class_new [{key: :a}, {key: :b}]
-      [m[:b], m[:a]].sort.should == [m[:a], m[:b]]
+      assert { [m[:b], m[:a]].sort == [m[:a], m[:b]] }
     end
 
     it "different class" do
       m1 = class_new [{key: :a}, {key: :b}]
       m2 = class_new [{key: :a}, {key: :b}]
-      expect { [m1[:b], m2[:a]].sort }.to raise_error(ArgumentError)
+      assert_raises(ArgumentError) { [m1[:b], m2[:a]].sort }
     end
   end
 
@@ -235,7 +235,7 @@ RSpec.describe MemoryRecord do
     b = Marshal.load(Marshal.dump(a))
     h = {}
     h[a] = true
-    h[b].should == true
+    assert { h[b] == true }
   end
 
   describe "Comparable operator" do
@@ -244,14 +244,14 @@ RSpec.describe MemoryRecord do
         { key: :a },
         { key: :b },
       ]
-      (model[:a] < model[:b]).should == true
-      (model[:a] == model[:a]).should == true
+      assert { model[:a] < model[:b]  }
+      assert { model[:a] == model[:a] }
     end
 
     it "==" do
       a = Model5.first
       b = Marshal.load(Marshal.dump(a))
-      (a == b).should == true
+      assert { a == b }
     end
   end
 
@@ -290,11 +290,11 @@ RSpec.describe MemoryRecord do
     end
 
     it "as_json(options)" do
-      ColorInfo.first.as_json(only: :key).should                                 == {:key => :blue}
-      ColorInfo.first.as_json(except: [:rgb, :code, :a]).should                  == {:key => :blue}
-      ColorInfo.first.as_json(only: [], methods: :hex).should                    == {:hex => "#0000FF"}
-      ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ).should == {:children => [{"a" => 1}, {"a" => 1}, {:a => 1}]}
-      ColorInfo.as_json(only: :key).should                                       == [{:key => :blue}, {:key => :red}]
+      assert { ColorInfo.first.as_json(only: :key) == {:key => :blue} }
+      assert { ColorInfo.first.as_json(except: [:rgb, :code, :a]) == {:key => :blue} }
+      assert { ColorInfo.first.as_json(only: [], methods: :hex) == {:hex => "#0000FF"} }
+      assert { ColorInfo.first.as_json(only: [], include: {children: {only: :a}}) == {:children => [{"a" => 1}, {"a" => 1}, {:a => 1}]} }
+      assert { ColorInfo.as_json(only: :key) == [{:key => :blue}, {:key => :red}] }
     end
   end
 end
