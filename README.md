@@ -70,8 +70,11 @@ Palette.collect { |e| ... }
 ### How do I submit a form to select in Rails?
 
 ```ruby
-form.collection_select(:selection_code, Palette, :code, :name)
+form.collection_select(:pallet_key, Palette, :key, :name)   // object[pallet_key]=tomato
+form.collection_select(:pallet_key, Palette, :code, :name)  // object[pallet_key]=1
 ```
+
+Either way can see it with `Palette[pallet_key]`
 
 ### Is the reference in subscripts slow?
 
