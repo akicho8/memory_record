@@ -21,7 +21,7 @@ module MemoryRecord
 
       hash = {}
       keys.each { |e| hash[e] = send(e) }
-      Array(options[:methods]).each { |e| hash[e] = send(e) }
+      Array(options[:methods]).each { |e| hash[e] = read_attribute_for_serialization(e) }
 
       serializable_add_includes(options) do |association, records, opts|
         hash[association] = -> {
@@ -41,6 +41,8 @@ module MemoryRecord
     end
 
     private
+
+    alias :read_attribute_for_serialization :send # for ActiveModelSerializers
 
     # Add associations specified via the <tt>:include</tt> option.
     #

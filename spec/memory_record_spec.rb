@@ -297,4 +297,23 @@ RSpec.describe MemoryRecord do
       assert { ColorInfo.as_json(only: :key) == [{:key => :blue}, {:key => :red}] }
     end
   end
+
+  context 'active_model_serializers' do
+    require "active_model_serializers"
+
+    class ColorInfo
+      include MemoryRecord
+      memory_record [
+        { key: :blue, },
+      ]
+    end
+
+    class ColorInfoSerializer < ActiveModel::Serializer
+      attributes :key
+    end
+
+    it do
+      assert { ActiveModelSerializers::SerializableResource.new(ColorInfo.first).as_json == {:key => :blue} }
+    end
+  end
 end

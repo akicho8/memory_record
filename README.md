@@ -224,4 +224,13 @@ color_info.as_json(only: [], include: {children: {only: :x}} ) # => {:children =
 
 ColorInfo.as_json(only: :key)               # => [{:key=>:blue}, {:key=>:red}]
 ColorInfo.to_json(only: :key)               # => "[{\"key\":\"blue\"},{\"key\":\"red\"}]"
+
+#### Case of ActiveModelSerializers
+
+```ruby
+class ColorInfoSerializer < ActiveModel::Serializer
+  attributes :key
+end
+
+ActiveModelSerializers::SerializableResource.new(ColorInfo.first).as_json # => { :key => :blue }
 ```
