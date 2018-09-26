@@ -27,7 +27,44 @@ $ bundle install
 
 ## Examples
 
-### Basic usage
+### Basic usage 1
+
+```ruby
+class Palette
+  include MemoryRecord
+  memory_record [
+    { key: :coral,  },
+    { key: :tomato, },
+    { key: :gold,   },
+  ]
+end
+
+Palette[:tomato].key   # => :tomato
+Palette[:tomato].name  # => "tomato"
+Palette[:tomato].code  # => 1
+```
+
+### Basic usage 2
+
+```ruby
+class Palette
+  include MemoryRecord
+  memory_record [
+    { key: :coral,  r: 255, g: 127, b:   0 },
+    { key: :tomato, r: 255, g:  99, b:  71 },
+    { key: :gold,   r: 255, g: 215, b:   0 },
+  ]
+end
+
+Palette[:tomato].key   # => :tomato
+Palette[:tomato].name  # => "tomato"
+Palette[:tomato].code  # => 1
+Palette[:tomato].r     # => 255
+Palette[:tomato].g     # => 99
+Palette[:tomato].b     # => 71
+```
+
+### Basic usage 3
 
 ```ruby
 class Palette
@@ -53,6 +90,7 @@ end
 
 Palette[:tomato].key   # => :tomato
 Palette[:tomato].name  # => "Tomato"
+Palette[:tomato].code  # => 1
 Palette[:tomato].rgb   # => [255, 99, 71]
 Palette[:tomato].hex   # => "#FF6347"
 Palette.collect(&:hex) # => ["#FF7F00", "#FF6347", "#FFD700"]
@@ -224,6 +262,7 @@ color_info.as_json(only: [], include: {children: {only: :x}} ) # => {:children =
 
 ColorInfo.as_json(only: :key)               # => [{:key=>:blue}, {:key=>:red}]
 ColorInfo.to_json(only: :key)               # => "[{\"key\":\"blue\"},{\"key\":\"red\"}]"
+```
 
 #### Case of ActiveModelSerializers
 
