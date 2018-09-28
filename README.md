@@ -255,6 +255,7 @@ class ColorInfo
 end
 
 color_info = ColorInfo.first
+color_info.as_json                          # => {:key=>:blue, :rgb=>[0, 0, 255], :a=>1, :code=>0}
 color_info.as_json(only: :key)              # => {:key => :blue}
 color_info.as_json(except: [:rgb, :code])   # => {:key => :blue}
 color_info.as_json(only: [], methods: :hex) # => {:hex => "#0000FF"}

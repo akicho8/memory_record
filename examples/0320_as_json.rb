@@ -38,6 +38,7 @@ end
 
 ColorInfo.first.key             # => :blue
 
+ColorInfo.first.as_json                                             # => {:key=>:blue, :rgb=>[0, 0, 255], :a=>1, :code=>0}
 ColorInfo.first.as_json(only: :key)                                 # => {:key=>:blue}
 ColorInfo.first.as_json(except: [:rgb, :code, :a])                  # => {:key=>:blue}
 ColorInfo.first.as_json(only: [], methods: :hex)                    # => {:hex=>"#0000FF"}
