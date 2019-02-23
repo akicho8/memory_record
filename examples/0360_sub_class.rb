@@ -4,21 +4,21 @@ require 'memory_record'
 class A
   include MemoryRecord
   memory_record [
-    { key: :a, x: 1, y: 2 },
+    { key: :foo },
   ]
 
-  def z
-    x + y
+  def name
+    super.to_s.upcase
   end
 end
 
 class B < A
   memory_record_reset superclass.collect(&:attributes)
 
-  def z
-    super * 2
+  def name
+    "(#{super})"
   end
 end
 
-B.values # => [#<B:0x00007feea40395b8 @attributes={:key=>:a, :x=>1, :y=>2, :code=>0}>]
-B.first.z                       # => 6
+A.first.name                    # => "FOO"
+B.first.name                    # => "(FOO)"
