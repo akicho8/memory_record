@@ -2,7 +2,7 @@ require "bundler/inline"
 
 gemfile do
   gem "memory_record", path: ".."
-  gem "active_model_serializers"
+  gem "active_model_serializers", "0.10.7"
 end
 
 class ColorInfo
@@ -18,5 +18,5 @@ class ColorInfoSerializer < ActiveModel::Serializer
 end
 
 pp ActiveModelSerializers::SerializableResource.new(ColorInfo.first).as_json # => {:key=>:blue, :name=>"blue"}
-# >> [active_model_serializers] Rendered ColorInfoSerializer with ActiveModelSerializers::Adapter::Attributes (0.14ms)
+# >> [active_model_serializers] Rendered ColorInfoSerializer with ActiveModelSerializers::Adapter::Attributes (0.12ms)
 # >> {:key=>:blue, :name=>"blue"}
