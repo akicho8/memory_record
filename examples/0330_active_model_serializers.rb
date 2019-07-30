@@ -2,7 +2,7 @@ require "bundler/inline"
 
 gemfile do
   gem "memory_record", path: ".."
-  gem "active_model_serializers", "0.10.7"
+  gem "active_model_serializers", "0.10.7" # It does not work with version 0.10.10
 end
 
 class ColorInfo
