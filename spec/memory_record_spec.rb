@@ -317,4 +317,19 @@ RSpec.describe MemoryRecord do
   #     assert { ActiveModelSerializers::SerializableResource.new(ColorInfo.first).as_json == {:key => :blue} }
   #   end
   # end
+
+  describe "valid_key" do
+    it do
+      model = class_new [
+        { key: :blue },
+      ]
+      assert { model.valid_key(:blue)              ==  :blue }
+      assert { model.valid_key(:unknown)           ==  nil   }
+      assert { model.valid_key(:unknown, :blue)    ==  :blue }
+      assert { model.valid_key(:unknown) { :blue } ==  :blue }
+      assert { model.valid_key(:unknown) { :blue } ==  :blue }
+      assert_raises(KeyError) { model.valid_key(:unknown) { :xxx } }
+      assert_raises(KeyError) { model.valid_key(:unknown, :xxx) }
+    end
+  end
 end

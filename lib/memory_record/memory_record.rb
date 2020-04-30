@@ -152,6 +152,25 @@ module MemoryRecord
         end
       end
 
+      # Color.valid_key(:blue)              # => :blue
+      # Color.valid_key(:unknown)           # => nil
+      # Color.valid_key(:unknown, :blue)    # => :blue
+      # Color.valid_key(:unknown) { :blue } # => :blue
+      # Color.valid_key(:unknown) { :xxx  } # => KeyError Exception
+      def valid_key(key, default = nil, &block)
+        if block_given? && default
+          raise ArgumentError, "Can't use default and block together"
+        end
+
+        if e = lookup(key)
+          e.key
+        elsif block_given?
+          fetch(yield).key
+        elsif default
+          fetch(default).key
+        end
+      end
+
       delegate :each, to: :values
 
       def keys
