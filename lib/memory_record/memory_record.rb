@@ -15,16 +15,16 @@ module MemoryRecord
     # Example
     #
     #   memory_record [
-    #     {id: 1, name: "alice"},
-    #     {id: 2, name: "bob"  },
+    #     { id: 1, name: "alice" },
+    #     { id: 2, name: "bob"   },
     #   ], attr_reader: false
     #
     # or
     #
     #   memory_record(attr_reader: false) do
     #     [
-    #       {id: 1, name: "alice"},
-    #       {id: 2, name: "bob"  },
+    #       { id: 1, name: "alice" },
+    #       { id: 2, name: "bob"   },
     #     ]
     #   end
     #
