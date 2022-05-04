@@ -36,7 +36,7 @@ module MemoryRecord
       hash
     end
 
-    def as_json(**options)
+    def as_json(options = {})
       serializable_hash(options)
     end
 

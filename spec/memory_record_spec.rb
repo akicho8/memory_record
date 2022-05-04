@@ -166,7 +166,7 @@ RSpec.describe MemoryRecord do
     def element(options)
       Class.new {
         include MemoryRecord
-        memory_record options do
+        memory_record **options do
           [
             {x: 1, y: 1, z: 1},
           ]
