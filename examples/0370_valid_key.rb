@@ -8,8 +8,8 @@ class Color
   ]
 end
 
-Color.valid_key(:blue)                       # => :blue
-Color.valid_key(:unknown)                    # => nil
-Color.valid_key(:unknown, :blue)             # => :blue
-Color.valid_key(:unknown) { :blue }          # => :blue
-Color.valid_key(:unknown) { :xxx } rescue $! # => #<KeyError: Color.fetch(:xxx) does not match anything
+Color.lookup_key(:blue)                       # => :blue
+Color.lookup_key(:unknown)                    # => nil
+Color.lookup_key(:unknown, :blue)             # => :blue
+Color.lookup_key(:unknown) { :blue }          # => :blue
+Color.lookup_key(:unknown) { :xxx } rescue $! # => #<KeyError: Color.fetch(:xxx) does not match anything

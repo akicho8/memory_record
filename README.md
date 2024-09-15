@@ -168,21 +168,21 @@ Palette.fetch_if(:xxx)           # => <KeyError: ...>
 ### Key validation
 
 ```ruby
-Palette.valid_key(:tomato)          # => :tomato
-Palette.valid_key("tomato")         # => :tomato
-Palette.valid_key(1)                # => :tomato
-Palette.valid_key(:xxx)             # => nil
-Palette.valid_key(:xxx, :tomato)    # => :tomato
-Palette.valid_key(:xxx) { :tomato } # => :tomato
+Palette.lookup_key(:tomato)          # => :tomato
+Palette.lookup_key("tomato")         # => :tomato
+Palette.lookup_key(1)                # => :tomato
+Palette.lookup_key(:xxx)             # => nil
+Palette.lookup_key(:xxx, :tomato)    # => :tomato
+Palette.lookup_key(:xxx) { :tomato } # => :tomato
 
-Palette.valid_key(:xxx, :tomato)          # => :tomato
-Palette.valid_key(:xxx, :black) rescue $! # => #<KeyError: Palette.fetch(:black) does not match anything
+Palette.lookup_key(:xxx, :tomato)          # => :tomato
+Palette.lookup_key(:xxx, :black) rescue $! # => #<KeyError: Palette.fetch(:black) does not match anything
 ```
 
 #### A common example in Rails
 
 ```ruby
-palette_key = Palette.valid_key(params[:palette_key], :tomato)
+palette_key = Palette.lookup_key(params[:palette_key], :tomato)
 ```
 
 ### How to refer to other keys

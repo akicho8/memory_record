@@ -318,18 +318,18 @@ RSpec.describe MemoryRecord do
   #   end
   # end
 
-  describe "valid_key" do
+  describe "lookup_key" do
     it do
       model = class_new [
         { key: :blue },
       ]
-      assert { model.valid_key(:blue)              ==  :blue }
-      assert { model.valid_key(:unknown)           ==  nil   }
-      assert { model.valid_key(:unknown, :blue)    ==  :blue }
-      assert { model.valid_key(:unknown) { :blue } ==  :blue }
-      assert { model.valid_key(:unknown) { :blue } ==  :blue }
-      assert_raises(KeyError) { model.valid_key(:unknown) { :xxx } }
-      assert_raises(KeyError) { model.valid_key(:unknown, :xxx) }
+      assert { model.lookup_key(:blue)              ==  :blue }
+      assert { model.lookup_key(:unknown)           ==  nil   }
+      assert { model.lookup_key(:unknown, :blue)    ==  :blue }
+      assert { model.lookup_key(:unknown) { :blue } ==  :blue }
+      assert { model.lookup_key(:unknown) { :blue } ==  :blue }
+      assert_raises(KeyError) { model.lookup_key(:unknown) { :xxx } }
+      assert_raises(KeyError) { model.lookup_key(:unknown, :xxx) }
     end
   end
 end

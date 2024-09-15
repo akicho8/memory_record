@@ -28,12 +28,12 @@ Palette[:tomato].rgb        # => [255, 99, 71]
 Palette[:tomato].hex        # => "#FF6347"
 Palette.collect(&:hex)      # => ["#FF7F00", "#FF6347", "#FFD700"]
 
-Palette.valid_key(:tomato)          # => :tomato
-Palette.valid_key("tomato")         # => :tomato
-Palette.valid_key(1)                # => :tomato
-Palette.valid_key(:xxx)             # => nil
-Palette.valid_key(:xxx, :tomato)    # => :tomato
-Palette.valid_key(:xxx) { :tomato } # => :tomato
+Palette.lookup_key(:tomato)          # => :tomato
+Palette.lookup_key("tomato")         # => :tomato
+Palette.lookup_key(1)                # => :tomato
+Palette.lookup_key(:xxx)             # => nil
+Palette.lookup_key(:xxx, :tomato)    # => :tomato
+Palette.lookup_key(:xxx) { :tomato } # => :tomato
 
-Palette.valid_key(:xxx, :tomato) # => :tomato
-Palette.valid_key(:xxx, :black) rescue $! # => #<KeyError: Palette.fetch(:black) does not match anything
+Palette.lookup_key(:xxx, :tomato) # => :tomato
+Palette.lookup_key(:xxx, :black) rescue $! # => #<KeyError: Palette.fetch(:black) does not match anything
