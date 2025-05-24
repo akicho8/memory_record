@@ -111,12 +111,18 @@ module MemoryRecord
           return key
         end
 
+        key = key_cast(key)
+
         case key
         when Symbol, String
           @values_hash[:key][key.to_sym]
         else
           @values_hash[:code][key]
         end
+      end
+
+      def key_cast(key)
+        key
       end
 
       def [](*v)
