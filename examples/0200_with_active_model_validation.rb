@@ -1,15 +1,15 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 class Foo
   include MemoryRecord
   memory_record [
-    {name: 'alice'},
-    {name: 'bob'},
+    {name: "alice"},
+    {name: "bob"},
   ]
 end
 
-require 'active_model'
+require "active_model"
 
 class Foo
   include ActiveModel::Validations

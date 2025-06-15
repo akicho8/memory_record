@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 if true
   require "active_model"
@@ -11,7 +11,7 @@ if true
     attr_accessor :a
 
     def attributes
-      {'a' => a}
+      {"a" => a}
     end
   end
 end
@@ -38,10 +38,10 @@ end
 
 ColorInfo.first.key             # => :blue
 
-ColorInfo.first.as_json                                             # => {:key=>:blue, :rgb=>[0, 0, 255], :a=>1, :code=>0}
-ColorInfo.first.as_json(only: :key)                                 # => {:key=>:blue}
-ColorInfo.first.as_json(except: [:rgb, :code, :a])                  # => {:key=>:blue}
-ColorInfo.first.as_json(only: [], methods: :hex)                    # => {:hex=>"#0000FF"}
-ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ) # => {:children=>[{"a"=>1}, {"a"=>1}, {:a=>1}]}
-ColorInfo.as_json(only: :key)   # => [{:key=>:blue}, {:key=>:red}]
+ColorInfo.first.as_json                                             # => {key: :blue, rgb: [0, 0, 255], a: 1, code: 0}
+ColorInfo.first.as_json(only: :key)                                 # => {key: :blue}
+ColorInfo.first.as_json(except: [:rgb, :code, :a])                  # => {key: :blue}
+ColorInfo.first.as_json(only: [], methods: :hex)                    # => {hex: "#0000FF"}
+ColorInfo.first.as_json(only: [], include: {children: {only: :a}} ) # => {children: [{"a" => 1}, {"a" => 1}, {a: 1}]}
+ColorInfo.as_json(only: :key)   # => [{key: :blue}, {key: :red}]
 ColorInfo.to_json(only: :key)   # => "[{\"key\":\"blue\"},{\"key\":\"red\"}]"

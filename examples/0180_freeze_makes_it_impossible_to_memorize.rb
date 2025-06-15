@@ -1,11 +1,11 @@
 # If you freeze it will not be able to make these memos
 
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 class C
   def self.x
-    @x ||= 'OK'
+    @x ||= "OK"
   end
 end
 
@@ -16,7 +16,7 @@ class C2
   ]
 
   def x
-    @x ||= 'OK'
+    @x ||= "OK"
   end
 end
 

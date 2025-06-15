@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 require "rspec/autorun"
 
@@ -16,6 +16,6 @@ describe do
 end
 # >> .
 # >> 
-# >> Finished in 0.01009 seconds (files took 0.30828 seconds to load)
+# >> Finished in 0.00996 seconds (files took 0.12816 seconds to load)
 # >> 1 example, 0 failures
 # >> 

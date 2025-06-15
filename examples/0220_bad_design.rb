@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 # I can do it like this, but I can not recommend it at all
 # Do not increase the magic number
@@ -13,5 +13,5 @@ class Foo
   ]
 end
 
-Foo["01"] # => #<Foo:0x00007fb30e1ddcd8 @attributes={:key=>:"01", :name=>"left", :code=>0}>
-Foo["02"] # => #<Foo:0x00007fb30e1ddbc0 @attributes={:key=>:"02", :name=>"right", :code=>1}>
+Foo["01"] # => #<Foo:0x000000011e3c36f0 @attributes={key: :"01", name: "left", code: 0}>
+Foo["02"] # => #<Foo:0x000000011e3c3628 @attributes={key: :"02", name: "right", code: 1}>

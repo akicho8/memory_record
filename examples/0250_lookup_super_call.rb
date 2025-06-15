@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 class C
   include MemoryRecord
@@ -15,5 +15,5 @@ class C
   end
 end
 
-C.lookup(:alice)                # => #<C:0x00007fa9dc11d8b0 @attributes={:key=>:alice, :code=>0}>
-C[:alice]                       # => #<C:0x00007fa9dc11d8b0 @attributes={:key=>:alice, :code=>0}>
+C.lookup(:alice)                # => #<C:0x00000001203138c0 @attributes={key: :alice, code: 0}>
+C[:alice]                       # => #<C:0x00000001203138c0 @attributes={key: :alice, code: 0}>

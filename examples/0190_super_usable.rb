@@ -1,5 +1,5 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 class Foo
   include MemoryRecord
@@ -22,4 +22,4 @@ end
 
 Foo.first.a                     # => 20
 Foo.first.name                  # => "(_key0)"
-Foo.first.to_h                  # => {:a=>10, :code=>0, :key=>:_key0, :x=>1}
+Foo.first.to_h                  # => {a: 10, code: 0, key: :_key0, x: 1}

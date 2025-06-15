@@ -1,11 +1,11 @@
-$LOAD_PATH.unshift '../lib'
-require 'memory_record'
+$LOAD_PATH.unshift "../lib"
+require "memory_record"
 
 class Direction
   include MemoryRecord
   memory_record [
-    {key: :left,  name: '←', vector: [-1,  0]},
-    {key: :right, name: '→', vector: [ 1,  0]},
+    {key: :left,  name: "←", vector: [-1,  0]},
+    {key: :right, name: "→", vector: [ 1,  0]},
   ]
 
   def long_name
@@ -24,4 +24,4 @@ Direction[:right].long_name     # => "→ direction"
 Direction[1].key                # => :right
 
 Direction[:up]                  # => nil
-Direction.fetch(:up) rescue $!  # => #<KeyError: Direction.fetch(:up) does not match anything
+Direction.fetch(:up) rescue $!  # => #<KeyError:"Direction.fetch(:up) does not match anything\nkeys: [:left, :right]\ncodes: [0, 1]">
