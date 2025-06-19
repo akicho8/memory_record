@@ -77,9 +77,12 @@ module MemoryRecord
           define_method(:name) { key.to_s }
         end
 
+        # https://docs.ruby-lang.org/ja/latest/class/Comparable.html
         # sort matches definition order. Comparable module methods will be available.
         def <=>(other)
-          [self.class, code] <=> [other.class, other.code]
+          if self.class == other.class
+            code <=> other.code
+          end
         end
 
         # Even if object_id of objects used as hash keys are different, they match. It also speeds up by defining hash.

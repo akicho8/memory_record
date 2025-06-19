@@ -332,4 +332,13 @@ RSpec.describe MemoryRecord do
       assert_raises(KeyError) { model.lookup_key(:unknown, :xxx) }
     end
   end
+
+  describe "euqal nil" do
+    it do
+      model = class_new [
+        { key: :blue },
+      ]
+      assert { model[:blue] != nil }
+    end
+  end
 end
